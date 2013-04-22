@@ -2,6 +2,8 @@
 #define MAIN_WINDOW_H
 
 #include <QtGui/QMainWindow>
+#include <model/model.h>
+#include <string>
 
 namespace Ui {
   class MainWindow;
@@ -13,6 +15,8 @@ class MainWindow : public QMainWindow {
 public:
   MainWindow();
   ~MainWindow();
+
+  void open(const std::string &filename);
                
 private slots:
   void on_action_New_triggered();
@@ -27,8 +31,9 @@ private slots:
 
 private:
 
-/// User interface
-Ui::MainWindow *m_ui;
+  /// User interface
+  Ui::MainWindow *m_ui;
+  Model           m_model;
 };
 
 #endif // MAINWINDOW

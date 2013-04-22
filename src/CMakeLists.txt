@@ -1,10 +1,13 @@
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${OSG_INCLUDE_DIR})
-
+include_directories(${ESBTL_INCLUDE_DIR})
 
 file(GLOB sources *.cpp)
 file(GLOB headers *.h)
+
+file(GLOB model_sources model/*.cpp)
+file(GLOB model_headers model/*.h)
 
 file(GLOB osg_sources osg/*.cpp)
 file(GLOB osg_headers osg/*.h)
@@ -23,6 +26,7 @@ message(${qt_ui_resource})
 add_executable(skin_surface_viewer
   ${sources} ${headers}
   ${osg_sources} ${osg_headers}
+  ${model_sources} ${model_headers}
   ${qt_ui_sources} ${qt_ui_headers}
   ${qt_forms} ${qt_forms_headers} ${qt_headers_moc}
   ${qt_resources} ${qt_ui_resource})

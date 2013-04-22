@@ -19,7 +19,10 @@ find_package( Boost COMPONENTS system program_options filesystem regex)
 include_directories( ${Boost_INCLUDE_DIR} )
 
 # CGAL
-#find_package(CGAL REQUIRED)
-#include(${CGAL_USE_FILE})
+find_package(CGAL REQUIRED)
+include(${CGAL_USE_FILE})
+
+# ESBTL (PDB loader)
+find_package(ESBTL REQUIRED)
 
 add_subdirectory("src")

@@ -31,6 +31,11 @@ MainWindow::~MainWindow() {
   delete(m_ui);
 }
 
+void MainWindow::open(const std::string &filename)
+{
+    m_model.load(filename);
+}
+
 void MainWindow::on_action_New_triggered() {
 //  m_model.clear();
 }
@@ -45,7 +50,7 @@ void MainWindow::on_action_Open_triggered() {
                                                   ".",
                                                   tr("Point data (*.dat)"));
   if(! fileName.isEmpty()) {
-//    m_model.open(fileName.toUtf8().constData());
+      open(fileName.toUtf8().constData());
   }
 }
 
