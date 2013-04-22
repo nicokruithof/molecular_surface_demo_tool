@@ -11,7 +11,8 @@ int main( int argc, char** argv )
 
   QCoreApplication::setOrganizationName("nghk.nl");
   QCoreApplication::setOrganizationDomain("www.nghk.nl");
-  QCoreApplication::setApplicationName("Periodic 4K renderer.");
+  QCoreApplication::setApplicationName("Skin surface viewer.");
+  QCoreApplication::setApplicationVersion("0.0");
 
   Q_INIT_RESOURCE(resource);
 
