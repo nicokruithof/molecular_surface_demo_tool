@@ -22,6 +22,9 @@ public:
     bool update();
 
 private:
+    bool update_osg_input_points();
+
+private:
     boost::shared_ptr<ModelData> m_model_data;
 };
 
