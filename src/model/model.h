@@ -5,6 +5,8 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include <osg/Group>
+
 class ModelData;
 
 class Model {
@@ -12,7 +14,12 @@ public:
     Model();
     virtual ~Model();
 
+    // Access functions
+    osg::ref_ptr<osg::Node> scene() const;
+
+    // Actions triggered by the UI
     bool load(const std::string &filename);
+    bool update();
 
 private:
     boost::shared_ptr<ModelData> m_model_data;

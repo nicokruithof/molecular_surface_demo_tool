@@ -19,6 +19,8 @@ public:
   void open(const std::string &filename);
                
 private slots:
+  void paintEvent(QPaintEvent *event);
+
   void on_action_New_triggered();
   void on_action_Open_triggered();
   void on_action_Print_triggered();
@@ -26,8 +28,6 @@ private slots:
   void on_actionShowVertices_toggled(bool b);
   void on_actionShowEdges_toggled(bool b);
   void on_actionShowFaces_toggled(bool b);
-
-  void on_action_Iteration_triggered();
 
 private:
 

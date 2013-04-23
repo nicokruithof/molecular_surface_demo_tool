@@ -1,5 +1,7 @@
 #include <qt/main_window.h>
 
+#include <iostream>
+
 #include <QFileDialog>
 
 #include <ui_main_window.h>
@@ -13,7 +15,7 @@ MainWindow::MainWindow()
 {
   m_ui->setupUi(this);
 
-//  m_ui->osg_main_widget->set_scene(m_model.scene());
+  m_ui->osg_main_widget->set_scene(m_model.scene());
 
 //  m_model.show_vertices(m_ui->actionShowVertices->isChecked());
 //  m_model.show_edges(m_ui->actionShowEdges->isChecked());
@@ -23,8 +25,6 @@ MainWindow::MainWindow()
   on_action_Initialize_random_points_triggered();
 
   QtCompositeRenderer::composite_viewer()->getView(0)->home();
-
-  // on_action_Iteration_triggered();
 }
 
 MainWindow::~MainWindow() {
@@ -36,6 +36,11 @@ void MainWindow::open(const std::string &filename)
     m_model.load(filename);
 }
 
+void MainWindow::paintEvent(QPaintEvent *event)
+{
+    m_model.update();
+    m_ui->osg_main_widget->set_scene(m_model.scene());
+}
 void MainWindow::on_action_New_triggered() {
 //  m_model.clear();
 }
@@ -77,8 +82,4 @@ void MainWindow::on_actionShowEdges_toggled(bool b) {
 
 void MainWindow::on_actionShowFaces_toggled(bool b) {
 //  m_model.show_faces(b);
-}
-
-void MainWindow::on_action_Iteration_triggered() {
-//  m_model.do_simulation_step();
 }
