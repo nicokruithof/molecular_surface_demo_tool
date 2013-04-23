@@ -4,9 +4,11 @@
 #include <boost/foreach.hpp>
 
 #include <osg/Geode>
-#include <osg/ShapeDrawable>
+#include <osg/CullFace>
 
-#include "extract_balls_from_pdb.h"
+#include <model/extract_balls_from_pdb.h>
+
+#include <osg/osg_utils.h>
 
 Model::Model()
 : m_model_data(new ModelData())
@@ -52,11 +54,11 @@ bool Model::update_osg_input_points() {
         {
             if (wp.weight() > 0) {
                 osg::Vec3f pos(wp.x(), wp.y(), wp.z());
-                osg::Sphere *sphere = new osg::Sphere(pos, sqrt(wp.weight()));
-                osg::ShapeDrawable *drawable = new osg::ShapeDrawable(sphere);
-                result->addDrawable(drawable);
+                result->addDrawable(OsgUtils::create_sphere(pos, sqrt(wp.weight())));
             }
         }
+        osg::StateSet* state = result->getOrCreateStateSet();
+        state->setAttributeAndModes(new osg::CullFace());
 
         m_model_data->m_scene->removeChild(m_model_data->m_osg_input_points.data());
         m_model_data->m_osg_input_points.set_data(osg_input_points);
