@@ -9,7 +9,7 @@ public:
     OsgUtils();
     virtual ~OsgUtils();
 
-    static osg::Drawable *create_sphere(const osg::Vec3f &pos, float radius);
+    static osg::Drawable *create_sphere(const osg::Vec3f &pos, float radius, size_t subdiv=3);
 };
 
 #endif /* OSG_OSG_UTILS_H_ */
