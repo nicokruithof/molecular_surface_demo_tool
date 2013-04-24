@@ -17,13 +17,6 @@ MainWindow::MainWindow()
 
   m_ui->osg_main_widget->set_scene(m_model.scene());
 
-//  m_model.show_vertices(m_ui->actionShowVertices->isChecked());
-//  m_model.show_edges(m_ui->actionShowEdges->isChecked());
-//  m_model.show_faces(m_ui->actionShowFaces->isChecked());
-
-  // m_model.open("../periodic_data_sets/nico-1_200.dat");
-  on_action_Initialize_random_points_triggered();
-
   QtCompositeRenderer::composite_viewer()->getView(0)->home();
 }
 
@@ -45,8 +38,14 @@ void MainWindow::on_action_New_triggered() {
 //  m_model.clear();
 }
 
-void MainWindow::on_action_Initialize_random_points_triggered() {
-//  m_model.initialize_random(2000);
+void MainWindow::on_actionShow_balls_toggled(bool b)
+{
+    m_model.show_balls(b);
+}
+
+void on_actionShow_skin_surface_toggled(bool b)
+{
+    // TODO(NGHK): Implement
 }
 
 void MainWindow::on_action_Open_triggered() {
@@ -70,16 +69,4 @@ void MainWindow::on_action_Print_triggered() {
     osg::Camera *cam = QtCompositeRenderer::composite_viewer()->getView(0)->getCamera();
     cam->setFinalDrawCallback(screen_capture);
   }
-}
-
-void MainWindow::on_actionShowVertices_toggled(bool b) {
-//  m_model.show_vertices(b);
-}
-
-void MainWindow::on_actionShowEdges_toggled(bool b) {
-//  m_model.show_edges(b);
-}
-
-void MainWindow::on_actionShowFaces_toggled(bool b) {
-//  m_model.show_faces(b);
 }

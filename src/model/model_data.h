@@ -43,6 +43,8 @@ public: // Atoms
 public: // Skin surface
     CachedClass< double >                  m_shrinkfactor;
     CachedClass< Regular_triangulation_3 > m_regular_triangulation;
+
+    //CachedClass< Skin_surface_3 >          m_skin_surface;
 };
 
 #endif /* MODEL_MODEL_DATA_H_ */

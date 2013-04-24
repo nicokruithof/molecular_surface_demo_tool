@@ -24,11 +24,9 @@ private slots:
   void on_action_New_triggered();
   void on_action_Open_triggered();
   void on_action_Print_triggered();
-  void on_action_Initialize_random_points_triggered();
-  void on_actionShowVertices_toggled(bool b);
-  void on_actionShowEdges_toggled(bool b);
-  void on_actionShowFaces_toggled(bool b);
 
+  void on_actionShow_balls_toggled(bool b);
+  void on_actionShow_skin_surface_toggled(bool b);
 private:
 
   /// User interface

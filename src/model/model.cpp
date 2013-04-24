@@ -72,6 +72,11 @@ bool Model::update_osg_input_points() {
     }
 }
 
+void Model::show_balls(bool b)
+{
+    m_model_data->m_osg_input_points.modify_data()->setNodeMask(b?~0:0);
+}
+
 bool Model::update_regular_triangulation() {
     if (!(m_model_data->m_regular_triangulation.is_up_to_date(m_model_data->m_input_points))) {
         Regular_triangulation_3 triang(

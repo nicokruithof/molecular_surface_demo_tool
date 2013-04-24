@@ -26,6 +26,11 @@ public:
     {
         return m_data;
     }
+    T &modify_data()
+    {
+        ++m_version;
+        return m_data;
+    }
     void set_data(const T &data)
     {
         ++m_version;

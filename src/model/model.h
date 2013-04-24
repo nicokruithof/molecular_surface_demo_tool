@@ -21,6 +21,8 @@ public:
     bool load(const std::string &filename);
     bool update();
 
+    void show_balls(bool b);
+
 private:
     bool update_osg_input_points();
     bool update_regular_triangulation();

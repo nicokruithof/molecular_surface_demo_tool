@@ -74,21 +74,6 @@ osg::Drawable *OsgUtils::create_sphere(const osg::Vec3f &pos, float radius, size
         }
         triangles.pop();
     }
-//    indices->push_back(0);
-//    indices->push_back(1);
-//    indices->push_back(2);
-//
-//    indices->push_back(1);
-//    indices->push_back(0);
-//    indices->push_back(3);
-//
-//    indices->push_back(2);
-//    indices->push_back(3);
-//    indices->push_back(0);
-//
-//    indices->push_back(3);
-//    indices->push_back(2);
-//    indices->push_back(1);
 
     vertices->reserve(normals->size());
     BOOST_FOREACH(osg::Vec3f &n, *normals)

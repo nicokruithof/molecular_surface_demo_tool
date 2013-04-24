@@ -61,9 +61,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionShowVertices"/>
-   <addaction name="actionShowEdges"/>
-   <addaction name="actionShowFaces"/>
+   <addaction name="actionShowBalls"/>
   </widget>
   <action name="action_Quit">
    <property name="text">
@@ -97,55 +95,18 @@
     <string>Ctrl+P</string>
    </property>
   </action>
-  <action name="actionShowVertices">
+  <action name="actionShowBalls">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="checked">
     <bool>true</bool>
    </property>
-   <property name="icon">
-    <iconset resource="resource.qrc">
-     <normaloff>:/icons/resources/vertex.png</normaloff>:/icons/resources/vertex.png</iconset>
-   </property>
    <property name="text">
-    <string>ShowVertices</string>
+    <string>Show balls</string>
    </property>
    <property name="toolTip">
     <string>Show vertices</string>
-   </property>
-  </action>
-  <action name="actionShowEdges">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="resource.qrc">
-     <normaloff>:/icons/resources/edge.png</normaloff>:/icons/resources/edge.png</iconset>
-   </property>
-   <property name="text">
-    <string>ShowEdges</string>
-   </property>
-   <property name="toolTip">
-    <string>Show edges</string>
-   </property>
-  </action>
-  <action name="actionShowFaces">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="resource.qrc">
-     <normaloff>:/icons/resources/face.png</normaloff>:/icons/resources/face.png</iconset>
-   </property>
-   <property name="text">
-    <string>ShowFaces</string>
-   </property>
-   <property name="toolTip">
-    <string>Show faces</string>
    </property>
   </action>
   <action name="action_Iteration">
