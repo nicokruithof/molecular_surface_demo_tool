@@ -31,6 +31,11 @@ public:
         ++m_version;
         m_data = data;
     }
+    void swap_data(T &data)
+    {
+        ++m_version;
+        m_data.swap(data);
+    }
     void clear()
     {
         ++m_version;

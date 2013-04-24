@@ -23,7 +23,7 @@ public:
 
 private:
     bool update_osg_input_points();
-
+    bool update_regular_triangulation();
 private:
     boost::shared_ptr<ModelData> m_model_data;
 };

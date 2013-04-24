@@ -40,7 +40,10 @@ bool Model::load(const std::string &filename)
 
 bool Model::update() {
     bool result = true;
+
     result &= update_osg_input_points();
+    result &= update_regular_triangulation();
+
     return result;
 }
 
@@ -66,6 +69,19 @@ bool Model::update_osg_input_points() {
 
         // Update cache
         m_model_data->m_osg_input_points.make_up_to_date(m_model_data->m_input_points);
+    }
+}
+
+bool Model::update_regular_triangulation() {
+    if (!(m_model_data->m_regular_triangulation.is_up_to_date(m_model_data->m_input_points))) {
+        Regular_triangulation_3 triang(
+                        m_model_data->m_input_points.data().begin(),
+                        m_model_data->m_input_points.data().end());
+
+        m_model_data->m_regular_triangulation.swap_data(triang);
+
+        // Update cache
+        m_model_data->m_regular_triangulation.make_up_to_date(m_model_data->m_input_points);
     }
 }
 
