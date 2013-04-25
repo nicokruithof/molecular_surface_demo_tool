@@ -26,6 +26,10 @@ public:
     {
         return m_data;
     }
+    T &data_non_const()
+    {
+        return m_data;
+    }
     T &modify_data()
     {
         ++m_version;

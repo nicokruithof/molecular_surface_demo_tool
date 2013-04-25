@@ -15,6 +15,8 @@ MainWindow::MainWindow()
 {
   m_ui->setupUi(this);
 
+  m_model.show_balls(m_ui->actionShow_balls->isEnabled());
+
   m_ui->osg_main_widget->set_scene(m_model.scene());
 
   QtCompositeRenderer::composite_viewer()->getView(0)->home();

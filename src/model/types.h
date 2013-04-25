@@ -11,14 +11,16 @@
 #include <ESBTL/CGAL/EPIC_kernel_with_atom.h>
 #include <ESBTL/default.h>
 
-typedef ESBTL::CGAL::EPIC_kernel_with_atom                  K;
-typedef ESBTL::CGAL::Default_system                         System;
-typedef CGAL::Skin_surface_traits_3<K>                      Traits;
-typedef CGAL::Skin_surface_3<Traits>                        Skin_surface_3;
-typedef Skin_surface_3::Regular                             Regular_triangulation_3;
-typedef Skin_surface_3::FT                                  FT;
-typedef Skin_surface_3::Weighted_point                      Weighted_point;
-typedef Weighted_point::Point                               Bare_point;
-typedef CGAL::Polyhedron_3<K>                               Polyhedron;
+typedef ESBTL::CGAL::EPIC_kernel_with_atom                    K;
+typedef ESBTL::CGAL::Default_system                           System;
+typedef CGAL::Skin_surface_traits_3<K>                        Traits;
+typedef CGAL::Skin_surface_3<Traits>                          Skin_surface_3;
+typedef Skin_surface_3::Regular                               Regular_triangulation_3;
+typedef Skin_surface_3::FT                                    FT;
+typedef Skin_surface_3::Weighted_point                        Weighted_point;
+typedef Weighted_point::Point                                 Bare_point;
+typedef K::Vector_3                                           Vector;
+typedef CGAL::Skin_surface_polyhedral_items_3<Skin_surface_3> Polyhedral_items;
+typedef CGAL::Polyhedron_3<K, Polyhedral_items>               Polyhedron;
 
 #endif /* MODEL_TYPES_H_ */

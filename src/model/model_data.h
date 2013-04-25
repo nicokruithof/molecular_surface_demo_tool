@@ -27,6 +27,7 @@ public:
     void clear() {
         m_scene = new osg::Group();
         m_input_points.clear();
+        m_osg_input_points.set_data(new osg::Node());
         m_shrinkfactor.set_data(0.5);
         m_molecular_systems.clear();
         m_regular_triangulation.clear();
@@ -42,7 +43,7 @@ public: // Atoms
     //Container for molecular system
     std::vector<System>       m_molecular_systems;
 
-    CachedClass< osg::ref_ptr<osg::Group> > m_osg_input_points;
+    CachedClass< osg::ref_ptr<osg::Node> > m_osg_input_points;
 
 public: // Skin surface
     CachedClass< double >                  m_shrinkfactor;

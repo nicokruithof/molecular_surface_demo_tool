@@ -11,6 +11,7 @@
 #include <model/extract_balls_from_pdb.h>
 
 #include <osg/osg_utils.h>
+#include <osg/cgal_osg_utils.h>
 
 Model::Model()
 : m_model_data(new ModelData())
@@ -146,19 +147,22 @@ bool Model::update_skin_surface_mesh()
 }
 bool Model::update_osg_skin_surface_mesh()
 {
-//    if (!(data().m_skin_surface.is_up_to_date(data().m_input_points) ||
-//          data().m_skin_surface.is_up_to_date(data().m_shrinkfactor))) {
-//        boost::shared_ptr<Skin_surface_3> skin(new Skin_surface_3(
-//                        data().m_input_points.data().begin(),
-//                        data().m_input_points.data().end(),
-//                        data().m_shrinkfactor.data(),
-//                        false));
-//
-//        data().m_skin_surface.swap_data(skin);
-//
-//        // Update cache
-//        data().m_skin_surface.make_up_to_date(data().m_input_points);
-//        data().m_skin_surface.make_up_to_date(data().m_shrinkfactor);
-//    }
+    if (!(data().m_osg_skin_surface_mesh.is_up_to_date(data().m_skin_surface) ||
+          data().m_osg_skin_surface_mesh.is_up_to_date(data().m_skin_surface_mesh))) {
+        osg::ref_ptr<osg::Geode> node = new osg::Geode();
+        Polyhedron &p = data().m_skin_surface_mesh.data_non_const();
+        const boost::shared_ptr<Skin_surface_3> &skin = data().m_skin_surface.data();
+
+        osg::Geometry *geometry = CgalOsgUtils::convert_mesh_with_normals(*skin, p);
+        node->addDrawable(geometry);
+
+        data().m_scene->removeChild(data().m_osg_skin_surface_mesh.data());
+        data().m_osg_skin_surface_mesh.set_data(node);
+        data().m_scene->addChild(data().m_osg_skin_surface_mesh.data());
+
+        // Update cache
+        data().m_osg_skin_surface_mesh.make_up_to_date(data().m_skin_surface);
+        data().m_osg_skin_surface_mesh.make_up_to_date(data().m_skin_surface_mesh);
+    }
     return true;
 }
