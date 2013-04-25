@@ -124,6 +124,9 @@
    </property>
   </action>
   <action name="actionShow_skin_surface">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Show skin surface</string>
    </property>

@@ -24,9 +24,13 @@ public:
     void show_balls(bool b);
 
 private:
+    ModelData &data() const;
+
     bool update_osg_input_points();
     bool update_regular_triangulation();
     bool update_skin_surface();
+    bool update_skin_surface_mesh();
+    bool update_osg_skin_surface_mesh();
 private:
     boost::shared_ptr<ModelData> m_model_data;
 };

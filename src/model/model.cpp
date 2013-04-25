@@ -20,19 +20,25 @@ Model::Model()
 Model::~Model() {
 }
 
+ModelData &Model::data() const
+{
+    assert(m_model_data != NULL);
+    return *m_model_data;
+}
+
 osg::ref_ptr<osg::Node> Model::scene() const {
-    return m_model_data->m_scene;
+    return data().m_scene;
 }
 
 bool Model::load(const std::string &filename)
 {
-    m_model_data->clear();
+    data().clear();
 
     // Retrieve input balls:
     std::list<Weighted_point> input_points;
     extract_balls_from_pdb<K>(
             filename.c_str(),
-            m_model_data->m_molecular_systems,
+            data().m_molecular_systems,
             std::back_inserter(input_points));
 
     if (input_points.empty())
@@ -44,7 +50,7 @@ bool Model::load(const std::string &filename)
 
     std::cout << "#Balls: " << input_points.size() << std::endl;
 
-    m_model_data->m_input_points.swap_data(input_points);
+    data().m_input_points.swap_data(input_points);
 
     return true;
 }
@@ -53,19 +59,21 @@ bool Model::update() {
     bool result = true;
 
     result &= update_osg_input_points();
-    //result &= update_regular_triangulation();
+    result &= update_regular_triangulation();
     result &= update_skin_surface();
+    result &= update_skin_surface_mesh();
+    result &= update_osg_skin_surface_mesh();
 
     return result;
 }
 
 bool Model::update_osg_input_points() {
-    if (!(m_model_data->m_osg_input_points.is_up_to_date(m_model_data->m_input_points))) {
+    if (!(data().m_osg_input_points.is_up_to_date(data().m_input_points))) {
         osg::ref_ptr<osg::Group> osg_input_points = new osg::Group();
         osg::ref_ptr<osg::Geode> result = new osg::Geode();
         osg_input_points->addChild(result);
 
-        BOOST_FOREACH(Weighted_point wp, m_model_data->m_input_points.data())
+        BOOST_FOREACH(Weighted_point wp, data().m_input_points.data())
         {
             if (wp.weight() > 0) {
                 osg::Vec3f pos(wp.x(), wp.y(), wp.z());
@@ -75,47 +83,82 @@ bool Model::update_osg_input_points() {
         osg::StateSet* state = result->getOrCreateStateSet();
         state->setAttributeAndModes(new osg::CullFace());
 
-        m_model_data->m_scene->removeChild(m_model_data->m_osg_input_points.data());
-        m_model_data->m_osg_input_points.set_data(osg_input_points);
-        m_model_data->m_scene->addChild(m_model_data->m_osg_input_points.data());
+        data().m_scene->removeChild(data().m_osg_input_points.data());
+        data().m_osg_input_points.set_data(osg_input_points);
+        data().m_scene->addChild(data().m_osg_input_points.data());
 
         // Update cache
-        m_model_data->m_osg_input_points.make_up_to_date(m_model_data->m_input_points);
+        data().m_osg_input_points.make_up_to_date(data().m_input_points);
     }
 }
 
 void Model::show_balls(bool b)
 {
-    m_model_data->m_osg_input_points.modify_data()->setNodeMask(b?~0:0);
+    data().m_osg_input_points.modify_data()->setNodeMask(b?~0:0);
 }
 
 bool Model::update_regular_triangulation() {
-    if (!(m_model_data->m_regular_triangulation.is_up_to_date(m_model_data->m_input_points))) {
+    if (!(data().m_regular_triangulation.is_up_to_date(data().m_input_points))) {
         Regular_triangulation_3 triang(
-                        m_model_data->m_input_points.data().begin(),
-                        m_model_data->m_input_points.data().end());
+                        data().m_input_points.data().begin(),
+                        data().m_input_points.data().end());
 
-        m_model_data->m_regular_triangulation.swap_data(triang);
+        data().m_regular_triangulation.swap_data(triang);
 
         // Update cache
-        m_model_data->m_regular_triangulation.make_up_to_date(m_model_data->m_input_points);
+        data().m_regular_triangulation.make_up_to_date(data().m_input_points);
     }
+    return true;
 }
 
 bool Model::update_skin_surface() {
-    if (!(m_model_data->m_skin_surface.is_up_to_date(m_model_data->m_input_points) ||
-          m_model_data->m_skin_surface.is_up_to_date(m_model_data->m_shrinkfactor))) {
+    if (!(data().m_skin_surface.is_up_to_date(data().m_input_points) ||
+          data().m_skin_surface.is_up_to_date(data().m_shrinkfactor))) {
         boost::shared_ptr<Skin_surface_3> skin(new Skin_surface_3(
-                        m_model_data->m_input_points.data().begin(),
-                        m_model_data->m_input_points.data().end(),
-                        m_model_data->m_shrinkfactor.data(),
+                        data().m_input_points.data().begin(),
+                        data().m_input_points.data().end(),
+                        data().m_shrinkfactor.data(),
                         false));
 
-        m_model_data->m_skin_surface.swap_data(skin);
+        data().m_skin_surface.swap_data(skin);
 
         // Update cache
-        m_model_data->m_skin_surface.make_up_to_date(m_model_data->m_input_points);
-        m_model_data->m_skin_surface.make_up_to_date(m_model_data->m_shrinkfactor);
+        data().m_skin_surface.make_up_to_date(data().m_input_points);
+        data().m_skin_surface.make_up_to_date(data().m_shrinkfactor);
     }
+    return true;
 }
 
+bool Model::update_skin_surface_mesh()
+{
+    if (!(data().m_skin_surface_mesh.is_up_to_date(data().m_skin_surface))) {
+        Polyhedron mesh;
+        boost::shared_ptr<Skin_surface_3> skin_surface = data().m_skin_surface.data();
+
+        CGAL::mesh_skin_surface_3(*skin_surface, mesh);
+        data().m_skin_surface_mesh.set_data(mesh);
+
+
+        // Update cache
+        data().m_skin_surface_mesh.make_up_to_date(data().m_skin_surface);
+    }
+    return true;
+}
+bool Model::update_osg_skin_surface_mesh()
+{
+//    if (!(data().m_skin_surface.is_up_to_date(data().m_input_points) ||
+//          data().m_skin_surface.is_up_to_date(data().m_shrinkfactor))) {
+//        boost::shared_ptr<Skin_surface_3> skin(new Skin_surface_3(
+//                        data().m_input_points.data().begin(),
+//                        data().m_input_points.data().end(),
+//                        data().m_shrinkfactor.data(),
+//                        false));
+//
+//        data().m_skin_surface.swap_data(skin);
+//
+//        // Update cache
+//        data().m_skin_surface.make_up_to_date(data().m_input_points);
+//        data().m_skin_surface.make_up_to_date(data().m_shrinkfactor);
+//    }
+    return true;
+}
