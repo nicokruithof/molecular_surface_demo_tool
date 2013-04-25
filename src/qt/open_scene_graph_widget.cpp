@@ -47,6 +47,8 @@ QWidget* OpenSceneGraphWidget::addViewWidget( osg::Camera* camera, osg::Node* sc
     
 osg::Camera* OpenSceneGraphWidget::createCamera( int x, int y, int w, int h, const std::string& name, bool windowDecoration) {
   osg::DisplaySettings* ds = osg::DisplaySettings::instance().get();
+  ds->setNumMultiSamples(4);
+
   osg::ref_ptr<osg::GraphicsContext::Traits> traits = new osg::GraphicsContext::Traits;
   traits->windowName = name;
   traits->windowDecoration = windowDecoration;
