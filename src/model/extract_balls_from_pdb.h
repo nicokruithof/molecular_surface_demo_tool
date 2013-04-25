@@ -6,7 +6,7 @@
 
 
 template <class K,class System, class OutputIterator>
-void extract_balls_from_pdb(const char *filename,
+bool extract_balls_from_pdb(const char *filename,
                             std::vector<System>& systems,
                             OutputIterator weighted_points) 
 {
@@ -25,14 +25,13 @@ void extract_balls_from_pdb(const char *filename,
   ESBTL::read_a_pdb_file(filename,sel,builder,Accept_none_occupancy_policy());
 
   if ( systems.empty() || systems[0].has_no_model() ){
-      std::cerr << "No atoms found" << std::endl;
-      exit(EXIT_FAILURE);
+      return false;
   }
   const typename System::Model& model=* systems[0].models_begin();
   std::copy(Weighted_atom_iterator(model.atoms_begin(),&atom_classifier),
             Weighted_atom_iterator(model.atoms_end(),&atom_classifier),
             weighted_points);  
-
+  return true;
 }
 
 

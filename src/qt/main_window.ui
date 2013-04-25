@@ -61,7 +61,8 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionShowBalls"/>
+   <addaction name="actionShow_balls"/>
+   <addaction name="actionShow_skin_surface"/>
   </widget>
   <action name="action_Quit">
    <property name="text">
@@ -95,7 +96,7 @@
     <string>Ctrl+P</string>
    </property>
   </action>
-  <action name="actionShowBalls">
+  <action name="actionShow_balls">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -120,6 +121,11 @@
   <action name="action_Initialize_random_points">
    <property name="text">
     <string>&amp;Initialize random points</string>
+   </property>
+  </action>
+  <action name="actionShow_skin_surface">
+   <property name="text">
+    <string>Show skin surface</string>
    </property>
   </action>
  </widget>

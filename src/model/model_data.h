@@ -16,6 +16,7 @@ public:
     , m_osg_input_points("osg_input_points", new osg::Group())
     , m_shrinkfactor("shrink_factor", 0.5)
     , m_regular_triangulation("regular_triangulation")
+    , m_skin_surface("skin_surface")
     {
         clear();
     }
@@ -27,6 +28,7 @@ public:
         m_shrinkfactor.set_data(0.5);
         m_molecular_systems.clear();
         m_regular_triangulation.clear();
+        m_skin_surface.set_data(boost::shared_ptr<Skin_surface_3>());
     }
 
 public: // Generic
@@ -44,7 +46,7 @@ public: // Skin surface
     CachedClass< double >                  m_shrinkfactor;
     CachedClass< Regular_triangulation_3 > m_regular_triangulation;
 
-    //CachedClass< Skin_surface_3 >          m_skin_surface;
+    CachedClass< boost::shared_ptr<Skin_surface_3> > m_skin_surface;
 };
 
 #endif /* MODEL_MODEL_DATA_H_ */

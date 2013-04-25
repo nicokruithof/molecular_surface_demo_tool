@@ -1,6 +1,8 @@
 #include "model/model.h"
 #include "model/model_data.h"
 
+#include <fstream>
+
 #include <boost/foreach.hpp>
 
 #include <osg/Geode>
@@ -32,9 +34,18 @@ bool Model::load(const std::string &filename)
             filename.c_str(),
             m_model_data->m_molecular_systems,
             std::back_inserter(input_points));
-    m_model_data->m_input_points.set_data(input_points);
 
-    std::cout << m_model_data->m_input_points.data().size() << std::endl;
+    if (input_points.empty())
+    {
+        Weighted_point wp;
+        std::ifstream in(filename.c_str());
+        while (in >> wp) input_points.push_back(wp);
+    }
+
+    std::cout << "#Balls: " << input_points.size() << std::endl;
+
+    m_model_data->m_input_points.swap_data(input_points);
+
     return true;
 }
 
@@ -42,7 +53,8 @@ bool Model::update() {
     bool result = true;
 
     result &= update_osg_input_points();
-    result &= update_regular_triangulation();
+    //result &= update_regular_triangulation();
+    result &= update_skin_surface();
 
     return result;
 }
@@ -87,6 +99,23 @@ bool Model::update_regular_triangulation() {
 
         // Update cache
         m_model_data->m_regular_triangulation.make_up_to_date(m_model_data->m_input_points);
+    }
+}
+
+bool Model::update_skin_surface() {
+    if (!(m_model_data->m_skin_surface.is_up_to_date(m_model_data->m_input_points) ||
+          m_model_data->m_skin_surface.is_up_to_date(m_model_data->m_shrinkfactor))) {
+        boost::shared_ptr<Skin_surface_3> skin(new Skin_surface_3(
+                        m_model_data->m_input_points.data().begin(),
+                        m_model_data->m_input_points.data().end(),
+                        m_model_data->m_shrinkfactor.data(),
+                        false));
+
+        m_model_data->m_skin_surface.swap_data(skin);
+
+        // Update cache
+        m_model_data->m_skin_surface.make_up_to_date(m_model_data->m_input_points);
+        m_model_data->m_skin_surface.make_up_to_date(m_model_data->m_shrinkfactor);
     }
 }
 

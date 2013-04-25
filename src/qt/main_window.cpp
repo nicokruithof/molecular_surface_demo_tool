@@ -43,7 +43,7 @@ void MainWindow::on_actionShow_balls_toggled(bool b)
     m_model.show_balls(b);
 }
 
-void on_actionShow_skin_surface_toggled(bool b)
+void MainWindow::on_actionShow_skin_surface_toggled(bool b)
 {
     // TODO(NGHK): Implement
 }
