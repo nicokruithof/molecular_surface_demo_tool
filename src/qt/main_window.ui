@@ -133,6 +133,9 @@
    <property name="text">
     <string>Subdivide skin surface</string>
    </property>
+   <property name="toolTip">
+    <string>Subdivide skin surface</string>
+   </property>
    <property name="shortcut">
     <string>Alt+D</string>
    </property>

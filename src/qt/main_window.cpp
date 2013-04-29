@@ -49,9 +49,8 @@ void MainWindow::on_actionShow_skin_surface_toggled(bool b)
 {
     // TODO(NGHK): Implement
 }
-void MainWindow::on_actionSubdivide_skin_surface_pressed()
+void MainWindow::on_actionSubdivide_skin_surface_triggered(bool checked)
 {
-    std::cout << __FUNCTION__ << std::endl;
     m_model.subdivide_skin_surface_mesh();
 }
 
