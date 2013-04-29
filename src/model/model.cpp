@@ -37,10 +37,9 @@ bool Model::load(const std::string &filename)
 
     // Retrieve input balls:
     std::list<Weighted_point> input_points;
-    extract_balls_from_pdb<K>(
+    extract_balls_from_pdb(
             filename.c_str(),
-            data().m_molecular_systems,
-            std::back_inserter(input_points));
+            input_points);
 
     if (input_points.empty())
     {
@@ -113,7 +112,7 @@ bool Model::update_regular_triangulation() {
 }
 
 bool Model::update_skin_surface() {
-    if (!(data().m_skin_surface.is_up_to_date(data().m_input_points) ||
+    if (!(data().m_skin_surface.is_up_to_date(data().m_input_points) &&
           data().m_skin_surface.is_up_to_date(data().m_shrinkfactor))) {
         boost::shared_ptr<Skin_surface_3> skin(new Skin_surface_3(
                         data().m_input_points.data().begin(),
@@ -147,8 +146,9 @@ bool Model::update_skin_surface_mesh()
 }
 bool Model::update_osg_skin_surface_mesh()
 {
-    if (!(data().m_osg_skin_surface_mesh.is_up_to_date(data().m_skin_surface) ||
+    if (!(data().m_osg_skin_surface_mesh.is_up_to_date(data().m_skin_surface) &&
           data().m_osg_skin_surface_mesh.is_up_to_date(data().m_skin_surface_mesh))) {
+
         osg::ref_ptr<osg::Geode> node = new osg::Geode();
         Polyhedron &p = data().m_skin_surface_mesh.data_non_const();
         const boost::shared_ptr<Skin_surface_3> &skin = data().m_skin_surface.data();
@@ -168,9 +168,9 @@ bool Model::update_osg_skin_surface_mesh()
 }
 bool Model::subdivide_skin_surface_mesh()
 {
-//    CGAL::subdivide_skin_surface_mesh_3(
-//                    *data().m_skin_surface.data(),
-//                    data().m_skin_surface_mesh.modify_data(),
-//                    1);
+    CGAL::subdivide_skin_surface_mesh_3(
+                    *data().m_skin_surface.data(),
+                    data().m_skin_surface_mesh.modify_data(),
+                    1);
     return true;
 }

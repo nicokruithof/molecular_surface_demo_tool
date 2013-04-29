@@ -8,11 +8,7 @@
 #include <CGAL/Skin_surface_polyhedral_items_3.h>
 #include <list>
 
-#include <ESBTL/CGAL/EPIC_kernel_with_atom.h>
-#include <ESBTL/default.h>
-
-typedef ESBTL::CGAL::EPIC_kernel_with_atom                    K;
-typedef ESBTL::CGAL::Default_system                           System;
+typedef CGAL::Exact_predicates_inexact_constructions_kernel   K;
 typedef CGAL::Skin_surface_traits_3<K>                        Traits;
 typedef CGAL::Skin_surface_3<Traits>                          Skin_surface_3;
 typedef Skin_surface_3::Regular                               Regular_triangulation_3;

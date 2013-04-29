@@ -52,6 +52,7 @@ void MainWindow::on_actionShow_skin_surface_toggled(bool b)
 void MainWindow::on_actionSubdivide_skin_surface_triggered(bool checked)
 {
     m_model.subdivide_skin_surface_mesh();
+    m_model.update();
 }
 
 
@@ -59,7 +60,7 @@ void MainWindow::on_action_Open_triggered() {
   QString fileName = QFileDialog::getOpenFileName(this,
                                                   tr("Open."),
                                                   ".",
-                                                  tr("Point data (*.dat)"));
+                                                  tr("Proteine data base (*.pdb);;Weighted points (*.cin)"));
   if(! fileName.isEmpty()) {
       open(fileName.toUtf8().constData());
   }

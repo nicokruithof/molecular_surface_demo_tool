@@ -29,7 +29,6 @@ public:
         m_input_points.clear();
         m_osg_input_points.set_data(new osg::Node());
         m_shrinkfactor.set_data(0.5);
-        m_molecular_systems.clear();
         m_regular_triangulation.clear();
         m_skin_surface.set_data(boost::shared_ptr<Skin_surface_3>());
     }
@@ -40,8 +39,6 @@ public: // Generic
 
 public: // Atoms
     CachedClass< std::list<Weighted_point> > m_input_points;
-    //Container for molecular system
-    std::vector<System>       m_molecular_systems;
 
     CachedClass< osg::ref_ptr<osg::Node> > m_osg_input_points;
 
