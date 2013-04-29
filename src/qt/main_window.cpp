@@ -49,6 +49,12 @@ void MainWindow::on_actionShow_skin_surface_toggled(bool b)
 {
     // TODO(NGHK): Implement
 }
+void MainWindow::on_actionSubdivide_skin_surface_pressed()
+{
+    std::cout << __FUNCTION__ << std::endl;
+    m_model.subdivide_skin_surface_mesh();
+}
+
 
 void MainWindow::on_action_Open_triggered() {
   QString fileName = QFileDialog::getOpenFileName(this,

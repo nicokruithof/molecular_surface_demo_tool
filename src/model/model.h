@@ -22,6 +22,7 @@ public:
     bool update();
 
     void show_balls(bool b);
+    bool subdivide_skin_surface_mesh();
 
 private:
     ModelData &data() const;

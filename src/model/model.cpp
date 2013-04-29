@@ -166,3 +166,11 @@ bool Model::update_osg_skin_surface_mesh()
     }
     return true;
 }
+bool Model::subdivide_skin_surface_mesh()
+{
+//    CGAL::subdivide_skin_surface_mesh_3(
+//                    *data().m_skin_surface.data(),
+//                    data().m_skin_surface_mesh.modify_data(),
+//                    1);
+    return true;
+}

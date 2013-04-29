@@ -64,6 +64,7 @@
    </attribute>
    <addaction name="actionShow_balls"/>
    <addaction name="actionShow_skin_surface"/>
+   <addaction name="actionSubdivide_skin_surface"/>
   </widget>
   <action name="action_Quit">
    <property name="text">
@@ -126,6 +127,14 @@
    </property>
    <property name="shortcut">
     <string>Alt+S</string>
+   </property>
+  </action>
+  <action name="actionSubdivide_skin_surface">
+   <property name="text">
+    <string>Subdivide skin surface</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+D</string>
    </property>
   </action>
  </widget>

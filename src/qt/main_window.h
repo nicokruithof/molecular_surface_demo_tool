@@ -27,6 +27,7 @@ private slots:
 
   void on_actionShow_balls_toggled(bool b);
   void on_actionShow_skin_surface_toggled(bool b);
+  void on_actionSubdivide_skin_surface_pressed();
 private:
 
   /// User interface
