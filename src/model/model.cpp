@@ -69,23 +69,19 @@ bool Model::update() {
 
 bool Model::update_osg_input_points() {
     if (!(data().m_osg_input_points.is_up_to_date(data().m_input_points))) {
-        osg::ref_ptr<osg::Group> osg_input_points = new osg::Group();
-        osg::ref_ptr<osg::Geode> result = new osg::Geode();
-        osg_input_points->addChild(result);
+        osg::ref_ptr<osg::Geode> balls = data().m_osg_input_points.modify_data()->asGeode();
+
+        assert(balls != NULL);
+        if (balls->getNumDrawables() > 0)
+            balls->removeDrawables(0, balls->getNumDrawables());
 
         BOOST_FOREACH(Weighted_point wp, data().m_input_points.data())
         {
             if (wp.weight() > 0) {
                 osg::Vec3f pos(wp.x(), wp.y(), wp.z());
-                result->addDrawable(OsgUtils::create_sphere(pos, sqrt(wp.weight())));
+                balls->addDrawable(OsgUtils::create_sphere(pos, sqrt(wp.weight())));
             }
         }
-        osg::StateSet* state = result->getOrCreateStateSet();
-        state->setAttributeAndModes(new osg::CullFace());
-
-        data().m_scene->removeChild(data().m_osg_input_points.data());
-        data().m_osg_input_points.set_data(osg_input_points);
-        data().m_scene->addChild(data().m_osg_input_points.data());
 
         // Update cache
         data().m_osg_input_points.make_up_to_date(data().m_input_points);

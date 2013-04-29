@@ -6,6 +6,7 @@
 #include <model/types.h>
 
 #include <osg/Group>
+#include <osg/Geode>
 
 #include <model/cached_class.h>
 
@@ -13,7 +14,7 @@ class ModelData {
 public:
     ModelData()
     : m_input_points("input_points")
-    , m_osg_input_points("osg_input_points", new osg::Group())
+    , m_osg_input_points("osg_input_points", new osg::Geode())
     , m_shrinkfactor("shrink_factor", 0.5)
     , m_regular_triangulation("regular_triangulation")
     , m_skin_surface("skin_surface")
@@ -27,7 +28,7 @@ public:
     void clear() {
         m_scene = new osg::Group();
         m_input_points.clear();
-        m_osg_input_points.set_data(new osg::Node());
+        m_osg_input_points.set_data(new osg::Geode());
         m_shrinkfactor.set_data(0.5);
         m_regular_triangulation.clear();
         m_skin_surface.set_data(boost::shared_ptr<Skin_surface_3>());
