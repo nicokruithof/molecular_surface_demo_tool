@@ -120,7 +120,7 @@ bool Model::update_osg_input_points() {
         {
             if (wp.weight() > 0) {
                 osg::Vec3f pos(wp.x(), wp.y(), wp.z());
-                balls->addDrawable(OsgUtils::create_sphere(pos, sqrt(wp.weight())));
+                balls->addDrawable(OsgUtils::create_sphere(pos, sqrt(wp.weight()), 4));
             }
         }
 
@@ -132,6 +132,10 @@ bool Model::update_osg_input_points() {
 void Model::show_balls(bool b)
 {
     data().m_osg_input_points.modify_data()->setNodeMask(b?~0:0);
+}
+void Model::show_skin_surface(bool b)
+{
+    data().m_osg_skin_surface_mesh.modify_data()->setNodeMask(b?~0:0);
 }
 
 bool Model::update_regular_triangulation() {
@@ -220,8 +224,8 @@ void Model::color_skin_surface(bool b)
     osg::Material *mat = new osg::Material();
     mat->setDiffuse(osg::Material::FRONT, osg::Vec4(0.5, 0.5, 1, 1));
 
-    osg::StateAttribute::Values v = osg::StateAttribute::OFF;
-    if (b) v = osg::StateAttribute::OVERRIDE;
+    osg::StateAttribute::Values v = osg::StateAttribute::OVERRIDE;
+    if (b) v = osg::StateAttribute::OFF;
 
     data().m_osg_skin_surface_mesh.modify_data()->getOrCreateStateSet()->setAttribute(mat, v);
 }

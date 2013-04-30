@@ -27,6 +27,7 @@ MainWindow::MainWindow()
   m_ui->osg_main_widget->set_scene(m_model.scene());
 
   on_actionShow_balls_toggled(m_ui->actionShow_balls->isChecked());
+  on_actionShow_skin_surface_toggled(m_ui->actionShow_skin_surface->isChecked());
   on_actionColor_skin_surface_triggered(m_ui->actionColor_skin_surface->isChecked());
 
   QtCompositeRenderer::composite_viewer()->getView(0)->home();
@@ -39,6 +40,7 @@ MainWindow::~MainWindow() {
 void MainWindow::open(const std::string &filename)
 {
     m_model.load(filename);
+    QtCompositeRenderer::composite_viewer()->getView(0)->home();
 }
 
 void MainWindow::paintEvent(QPaintEvent *event)
@@ -57,7 +59,7 @@ void MainWindow::on_actionShow_balls_toggled(bool b)
 
 void MainWindow::on_actionShow_skin_surface_toggled(bool b)
 {
-    // TODO(NGHK): Implement
+    m_model.show_skin_surface(b);
 }
 void MainWindow::on_actionSubdivide_skin_surface_triggered(bool checked)
 {

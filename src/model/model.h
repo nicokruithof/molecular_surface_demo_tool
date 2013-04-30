@@ -25,6 +25,7 @@ public:
     bool update();
 
     void show_balls(bool b);
+    void show_skin_surface(bool b);
     bool subdivide_skin_surface_mesh();
     void color_skin_surface(bool b);
 
