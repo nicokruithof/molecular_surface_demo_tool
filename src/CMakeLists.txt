@@ -12,6 +12,9 @@ file(GLOB model_headers model/*.h)
 file(GLOB osg_sources osg/*.cpp)
 file(GLOB osg_headers osg/*.h)
 
+file(GLOB utils_sources utils/*.cpp)
+file(GLOB utils_headers utils/*.h)
+
 file(GLOB qt_ui_sources  qt/*.cpp)
 file(GLOB qt_ui_headers  qt/*.h)
 file(GLOB qt_ui_forms    qt/*.ui)
@@ -21,12 +24,11 @@ qt4_wrap_cpp(qt_headers_moc ${qt_ui_headers})
 qt4_wrap_ui(qt_forms_headers ${qt_ui_forms})
 qt4_add_resources(qt_resources ${qt_ui_resource})
 
-message(${qt_ui_resource})
-
 add_executable(skin_surface_viewer
   ${sources} ${headers}
   ${osg_sources} ${osg_headers}
   ${model_sources} ${model_headers}
+  ${utils_sources} ${utils_headers}
   ${qt_ui_sources} ${qt_ui_headers}
   ${qt_forms} ${qt_forms_headers} ${qt_headers_moc}
   ${qt_resources} ${qt_ui_resource})

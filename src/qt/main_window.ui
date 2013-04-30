@@ -38,6 +38,7 @@
     <property name="title">
      <string>Manipulation</string>
     </property>
+    <addaction name="actionShow_statistics"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuManipulation"/>
@@ -138,6 +139,14 @@
    </property>
    <property name="shortcut">
     <string>Alt+D</string>
+   </property>
+  </action>
+  <action name="actionShow_statistics">
+   <property name="text">
+    <string>Show statistics</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
    </property>
   </action>
  </widget>

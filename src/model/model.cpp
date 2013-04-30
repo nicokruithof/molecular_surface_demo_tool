@@ -31,6 +31,46 @@ osg::ref_ptr<osg::Node> Model::scene() const {
     return data().m_scene;
 }
 
+void Model::get_statistics(std::list<Statistic> &stats)
+{
+    stats.clear();
+    Statistic s;
+
+    s.category = "input";
+    s.set("# balls", data().m_input_points.data().size());
+    stats.push_back(s);
+    s.set("shrink_factor", data().m_shrinkfactor.data());
+    stats.push_back(s);
+
+    s.category = "regular triangulation";
+    s.set("# vertices", data().m_skin_surface.data()->regular().number_of_vertices());
+    stats.push_back(s);
+    s.set("# edges", data().m_skin_surface.data()->regular().number_of_finite_edges());
+    stats.push_back(s);
+    s.set("# faces", data().m_skin_surface.data()->regular().number_of_finite_facets());
+    stats.push_back(s);
+    s.set("# cells", data().m_skin_surface.data()->regular().number_of_finite_cells());
+    stats.push_back(s);
+
+    s.category = "triangulated mixed complex";
+    s.set("# vertices", data().m_skin_surface.data()->triangulated_mixed_complex().number_of_vertices());
+    stats.push_back(s);
+    s.set("# edges", data().m_skin_surface.data()->triangulated_mixed_complex().number_of_finite_edges());
+    stats.push_back(s);
+    s.set("# faces", data().m_skin_surface.data()->triangulated_mixed_complex().number_of_finite_facets());
+    stats.push_back(s);
+    s.set("# cells", data().m_skin_surface.data()->triangulated_mixed_complex().number_of_finite_cells());
+    stats.push_back(s);
+
+    s.category = "skin surface mesh";
+    s.set("# vertices", data().m_skin_surface_mesh.data().size_of_vertices());
+    stats.push_back(s);
+    s.set("# edges", data().m_skin_surface_mesh.data().size_of_halfedges());
+    stats.push_back(s);
+    s.set("# faces", data().m_skin_surface_mesh.data().size_of_facets());
+    stats.push_back(s);
+}
+
 bool Model::load(const std::string &filename)
 {
     data().clear();

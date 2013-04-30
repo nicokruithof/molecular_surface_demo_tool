@@ -6,7 +6,8 @@
 #include <string>
 
 namespace Ui {
-  class MainWindow;
+class MainWindow;
+class StatisticsDialog;
 }
 
 class MainWindow : public QMainWindow {
@@ -25,14 +26,19 @@ private slots:
   void on_action_Open_triggered();
   void on_action_Print_triggered();
 
+  void on_actionShow_statistics_triggered(bool checked = false);
+
   void on_actionShow_balls_toggled(bool b);
   void on_actionShow_skin_surface_toggled(bool b);
   void on_actionSubdivide_skin_surface_triggered(bool checked = false);
 private:
 
   /// User interface
-  Ui::MainWindow *m_ui;
-  Model           m_model;
+  Ui::MainWindow       *m_ui;
+  Ui::StatisticsDialog *m_statistics_ui;
+  QDialog              *m_statistics_dialog;
+
+  Model                m_model;
 };
 
 #endif // MAINWINDOW

@@ -7,6 +7,8 @@
 
 #include <osg/Group>
 
+#include <utils/statistic.h>
+
 class ModelData;
 
 class Model {
@@ -15,6 +17,7 @@ public:
     virtual ~Model();
 
     // Access functions
+    void get_statistics(std::list<Statistic> &stats);
     osg::ref_ptr<osg::Node> scene() const;
 
     // Actions triggered by the UI
