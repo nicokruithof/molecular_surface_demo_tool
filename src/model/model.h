@@ -21,6 +21,7 @@ public:
     osg::ref_ptr<osg::Node> scene() const;
 
     // Actions triggered by the UI
+    bool clear();
     bool load(const std::string &filename);
     bool update();
 
@@ -33,7 +34,6 @@ private:
     ModelData &data() const;
 
     bool update_osg_input_points();
-    bool update_regular_triangulation();
     bool update_skin_surface();
     bool update_skin_surface_mesh();
     bool update_osg_skin_surface_mesh();

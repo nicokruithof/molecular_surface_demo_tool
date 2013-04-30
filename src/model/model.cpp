@@ -71,6 +71,10 @@ void Model::get_statistics(std::list<Statistic> &stats)
     s.set("# faces", data().m_skin_surface_mesh.data().size_of_facets());
     stats.push_back(s);
 }
+bool Model::clear()
+{
+    data().clear();
+}
 
 bool Model::load(const std::string &filename)
 {
@@ -100,7 +104,6 @@ bool Model::update() {
     bool result = true;
 
     result &= update_osg_input_points();
-    result &= update_regular_triangulation();
     result &= update_skin_surface();
     result &= update_skin_surface_mesh();
     result &= update_osg_skin_surface_mesh();
@@ -136,20 +139,6 @@ void Model::show_balls(bool b)
 void Model::show_skin_surface(bool b)
 {
     data().m_osg_skin_surface_mesh.modify_data()->setNodeMask(b?~0:0);
-}
-
-bool Model::update_regular_triangulation() {
-    if (!(data().m_regular_triangulation.is_up_to_date(data().m_input_points))) {
-        Regular_triangulation_3 triang(
-                        data().m_input_points.data().begin(),
-                        data().m_input_points.data().end());
-
-        data().m_regular_triangulation.swap_data(triang);
-
-        // Update cache
-        data().m_regular_triangulation.make_up_to_date(data().m_input_points);
-    }
-    return true;
 }
 
 bool Model::update_skin_surface() {
