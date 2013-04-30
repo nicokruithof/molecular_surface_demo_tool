@@ -33,6 +33,8 @@ private slots:
   void on_actionSubdivide_skin_surface_triggered(bool checked = false);
   void on_actionColor_skin_surface_triggered(bool checked);
 
+  void on_shrink_factor_slider_valueChanged();
+  void on_shrink_factor_spinbox_valueChanged();
 private:
 
   /// User interface

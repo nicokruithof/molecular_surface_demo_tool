@@ -227,3 +227,9 @@ bool Model::subdivide_skin_surface_mesh()
                     1);
     return true;
 }
+
+void Model::set_shrink_factor(double shrink_factor)
+{
+    shrink_factor = std::max(0.01, std::min(1-0.01, shrink_factor));
+    data().m_shrinkfactor.set_data(shrink_factor);
+}
