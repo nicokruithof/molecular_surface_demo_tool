@@ -7,6 +7,7 @@
 
 #include <osg/Geode>
 #include <osg/CullFace>
+#include <osg/Material>
 
 #include <model/extract_balls_from_pdb.h>
 
@@ -184,17 +185,29 @@ bool Model::update_osg_skin_surface_mesh()
 {
     if (!(data().m_osg_skin_surface_mesh.is_up_to_date(data().m_skin_surface) &&
           data().m_osg_skin_surface_mesh.is_up_to_date(data().m_skin_surface_mesh))) {
+        osg::ref_ptr<osg::Geode> geode = data().m_osg_skin_surface_mesh.modify_data();
 
-        osg::ref_ptr<osg::Geode> node = new osg::Geode();
         Polyhedron &p = data().m_skin_surface_mesh.data_non_const();
         const boost::shared_ptr<Skin_surface_3> &skin = data().m_skin_surface.data();
 
-        osg::Geometry *geometry = CgalOsgUtils::convert_mesh_with_normals(*skin, p);
-        node->addDrawable(geometry);
+        if (geode->getNumDrawables() > 0)
+            geode->removeDrawables(0, geode->getNumDrawables());
 
-        data().m_scene->removeChild(data().m_osg_skin_surface_mesh.data());
-        data().m_osg_skin_surface_mesh.set_data(node);
-        data().m_scene->addChild(data().m_osg_skin_surface_mesh.data());
+        std::vector<osg::Geometry *> geometries = CgalOsgUtils::convert_skin_mesh(*skin, p);
+        int i=0;
+        BOOST_FOREACH(osg::Geometry *geometry, geometries) {
+            geode->addDrawable(geometry);
+            osg::Material *material = new osg::Material();
+            osg::Vec4 color;
+            switch (i++) {
+            case 0: color = osg::Vec4(0,0,1,1); break;
+            case 1: color = osg::Vec4(0,1,0,1); break;
+            case 2: color = osg::Vec4(1,0,0,1); break;
+            case 3: color = osg::Vec4(0,1,1,1); break;
+            }
+            material->setDiffuse(osg::Material::FRONT, color);
+            geometry->getOrCreateStateSet()->setAttribute(material);
+        }
 
         // Update cache
         data().m_osg_skin_surface_mesh.make_up_to_date(data().m_skin_surface);
@@ -202,6 +215,17 @@ bool Model::update_osg_skin_surface_mesh()
     }
     return true;
 }
+void Model::color_skin_surface(bool b)
+{
+    osg::Material *mat = new osg::Material();
+    mat->setDiffuse(osg::Material::FRONT, osg::Vec4(0.5, 0.5, 1, 1));
+
+    osg::StateAttribute::Values v = osg::StateAttribute::OFF;
+    if (b) v = osg::StateAttribute::OVERRIDE;
+
+    data().m_osg_skin_surface_mesh.modify_data()->getOrCreateStateSet()->setAttribute(mat, v);
+}
+
 bool Model::subdivide_skin_surface_mesh()
 {
     CGAL::subdivide_skin_surface_mesh_3(

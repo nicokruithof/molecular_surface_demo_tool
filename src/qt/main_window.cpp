@@ -26,7 +26,8 @@ MainWindow::MainWindow()
 
   m_ui->osg_main_widget->set_scene(m_model.scene());
 
-  m_model.show_balls(m_ui->actionShow_balls->isChecked());
+  on_actionShow_balls_toggled(m_ui->actionShow_balls->isChecked());
+  on_actionColor_skin_surface_triggered(m_ui->actionColor_skin_surface->isChecked());
 
   QtCompositeRenderer::composite_viewer()->getView(0)->home();
 }
@@ -62,6 +63,10 @@ void MainWindow::on_actionSubdivide_skin_surface_triggered(bool checked)
 {
     m_model.subdivide_skin_surface_mesh();
     m_model.update();
+}
+void MainWindow::on_actionColor_skin_surface_triggered(bool checked)
+{
+    m_model.color_skin_surface(checked);
 }
 void MainWindow::on_actionShow_statistics_triggered(bool checked)
 {
@@ -122,3 +127,4 @@ void MainWindow::on_action_Print_triggered() {
     cam->setFinalDrawCallback(screen_capture);
   }
 }
+

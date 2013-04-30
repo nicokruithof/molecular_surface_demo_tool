@@ -39,6 +39,8 @@
      <string>Manipulation</string>
     </property>
     <addaction name="actionShow_statistics"/>
+    <addaction name="actionSubdivide_skin_surface"/>
+    <addaction name="actionColor_skin_surface"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuManipulation"/>
@@ -65,7 +67,6 @@
    </attribute>
    <addaction name="actionShow_balls"/>
    <addaction name="actionShow_skin_surface"/>
-   <addaction name="actionSubdivide_skin_surface"/>
   </widget>
   <action name="action_Quit">
    <property name="text">
@@ -147,6 +148,17 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionColor_skin_surface">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Color skin surface</string>
+   </property>
+   <property name="shortcut">
+    <string>Alt+C</string>
    </property>
   </action>
  </widget>
