@@ -123,7 +123,12 @@ bool Model::update_osg_input_points() {
         {
             if (wp.weight() > 0) {
                 osg::Vec3f pos(wp.x(), wp.y(), wp.z());
-                balls->addDrawable(OsgUtils::create_sphere(pos, sqrt(wp.weight()), 4));
+
+                osg::Drawable *drawable = OsgUtils::create_sphere(pos, sqrt(wp.weight()), 4);
+                drawable->setUseDisplayList(false);
+                drawable->setUseVertexBufferObjects(true);
+
+                balls->addDrawable(drawable);
             }
         }
 
@@ -189,7 +194,9 @@ bool Model::update_osg_skin_surface_mesh()
         std::vector<osg::Geometry *> geometries = CgalOsgUtils::convert_skin_mesh(*skin, p);
         int i=0;
         BOOST_FOREACH(osg::Geometry *geometry, geometries) {
-            geode->addDrawable(geometry);
+            geometry->setUseDisplayList(false);
+            geometry->setUseVertexBufferObjects(true);
+
             osg::Material *material = new osg::Material();
             osg::Vec4 color;
             switch (i++) {
@@ -200,6 +207,8 @@ bool Model::update_osg_skin_surface_mesh()
             }
             material->setDiffuse(osg::Material::FRONT, color);
             geometry->getOrCreateStateSet()->setAttribute(material);
+
+            geode->addDrawable(geometry);
         }
 
         // Update cache
