@@ -15,6 +15,9 @@ file(GLOB osg_headers osg/*.h)
 file(GLOB utils_sources utils/*.cpp)
 file(GLOB utils_headers utils/*.h)
 
+file(GLOB CGAL_sources CGAL/*.cpp)
+file(GLOB CGAL_headers CGAL/*.h)
+
 file(GLOB qt_ui_sources  qt/*.cpp)
 file(GLOB qt_ui_headers  qt/*.h)
 file(GLOB qt_ui_forms    qt/*.ui)
@@ -29,6 +32,7 @@ add_executable(skin_surface_viewer
   ${osg_sources} ${osg_headers}
   ${model_sources} ${model_headers}
   ${utils_sources} ${utils_headers}
+  ${CGAL_sources} ${CGAL_headers}
   ${qt_ui_sources} ${qt_ui_headers}
   ${qt_forms} ${qt_forms_headers} ${qt_headers_moc}
   ${qt_resources} ${qt_ui_resource})

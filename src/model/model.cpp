@@ -14,6 +14,8 @@
 #include <osg/osg_utils.h>
 #include <osg/cgal_osg_utils.h>
 
+int n_quadratic_surface_instances=0;
+
 Model::Model()
 : m_model_data(new ModelData())
 {
@@ -43,6 +45,7 @@ void Model::get_statistics(std::list<Statistic> &stats)
     s.set("shrink_factor", data().m_shrinkfactor.data());
     stats.push_back(s);
 
+
     s.category = "regular triangulation";
     s.set("# vertices", data().m_skin_surface.data()->regular().number_of_vertices());
     stats.push_back(s);
@@ -70,7 +73,23 @@ void Model::get_statistics(std::list<Statistic> &stats)
     stats.push_back(s);
     s.set("# faces", data().m_skin_surface_mesh.data().size_of_facets());
     stats.push_back(s);
-}
+
+    s.category = "memory consumption";
+    {
+        int quadr_surf = (Skin_surface_3::Quadratic_surface::instance_count() * sizeof(Skin_surface_3::Quadratic_surface))/1000;
+        int tmc_vh = (data().m_skin_surface.data()->triangulated_mixed_complex().number_of_vertices() * sizeof(Skin_surface_3::TMC::Vertex)) / 1000;
+        int tmc_ch = (data().m_skin_surface.data()->triangulated_mixed_complex().number_of_cells() * sizeof(Skin_surface_3::TMC::Cell)) / 1000;
+
+        s.set("#quadratic surfaces", Skin_surface_3::Quadratic_surface::instance_count());
+        stats.push_back(s);
+        s.set("Quadratic_surface", quadr_surf, "kB");
+        stats.push_back(s);
+        s.set("TMC Vh", tmc_vh, "kB");
+        stats.push_back(s);
+        s.set("TMC Ch", tmc_ch, "kB");
+        stats.push_back(s);
+    }
+    }
 bool Model::clear()
 {
     data().clear();
