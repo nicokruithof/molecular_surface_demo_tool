@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>resources/vertex.png</file>
+    <file>resources/edge.png</file>
+    <file>resources/face.png</file>
+  </qresource>
+</RCC>
