@@ -12,6 +12,9 @@ file(GLOB model_headers model/*.h)
 file(GLOB view_sources view/*.cpp)
 file(GLOB view_headers view/*.h)
 
+file(GLOB controller_sources controller/*.cpp)
+file(GLOB controller_headers controller/*.h)
+
 file(GLOB utils_sources utils/*.cpp)
 file(GLOB utils_headers utils/*.h)
 
@@ -30,6 +33,7 @@ qt4_add_resources(qt_resources ${qt_ui_resource})
 add_executable(skin_curve_viewer
   ${sources} ${headers}
   ${view_sources} ${view_headers}
+  ${controller_sources} ${controller_headers}
   ${model_sources} ${model_headers}
   ${utils_sources} ${utils_headers}
   ${CGAL_sources} ${CGAL_headers}
