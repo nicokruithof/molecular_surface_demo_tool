@@ -174,6 +174,15 @@ bool Model::update_skin_surface() {
                         data().m_shrinkfactor.data(),
                         false));
 
+        typedef CGAL::Triangulated_mixed_complex_observer_3<Skin_surface_3::TMC, Skin_surface_3> Observer;
+        typedef CGAL::Mixed_complex_triangulator_3<
+          Skin_surface_3::Regular,
+          Skin_surface_3::TMC,
+          Observer>  Mixed_complex_triangulator;
+        double shrink_factor = data().m_shrinkfactor.data();
+        Observer observer(shrink_factor);
+        Mixed_complex_triangulator(skin->regular(), shrink_factor, skin->triangulated_mixed_complex(), observer, true);
+
         data().m_skin_surface.swap_data(skin);
 
         // Update cache
