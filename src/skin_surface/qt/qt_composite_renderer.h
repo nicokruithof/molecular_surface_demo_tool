@@ -8,7 +8,7 @@
 
 class QtCompositeRenderer : public QWidget
 {
-  Q_OBJECT;
+  Q_OBJECT
 
 public:
   QtCompositeRenderer(osgViewer::ViewerBase::ThreadingModel threadingModel=osgViewer::CompositeViewer::SingleThreaded);

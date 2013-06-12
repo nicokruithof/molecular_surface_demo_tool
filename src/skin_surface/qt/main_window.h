@@ -11,7 +11,7 @@ class StatisticsDialog;
 }
 
 class MainWindow : public QMainWindow {
-  Q_OBJECT;
+  Q_OBJECT
   
 public:
   MainWindow();

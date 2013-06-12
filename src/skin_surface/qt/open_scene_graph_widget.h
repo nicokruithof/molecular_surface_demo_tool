@@ -5,7 +5,7 @@
 #include <osgViewer/CompositeViewer>
 
 class OpenSceneGraphWidget : public QWidget {
-  Q_OBJECT;
+  Q_OBJECT
 
 public:
   OpenSceneGraphWidget(QWidget * parent = 0, Qt::WindowFlags f = 0);
