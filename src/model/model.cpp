@@ -93,6 +93,7 @@ void Model::get_statistics(std::list<Statistic> &stats)
 bool Model::clear()
 {
     data().clear();
+    return true;
 }
 
 bool Model::load(const std::string &filename)
@@ -154,6 +155,7 @@ bool Model::update_osg_input_points() {
         // Update cache
         data().m_osg_input_points.make_up_to_date(data().m_input_points);
     }
+    return true;
 }
 
 void Model::show_balls(bool b)
@@ -168,20 +170,25 @@ void Model::show_skin_surface(bool b)
 bool Model::update_skin_surface() {
     if (!(data().m_skin_surface.is_up_to_date(data().m_input_points) &&
           data().m_skin_surface.is_up_to_date(data().m_shrinkfactor))) {
-        boost::shared_ptr<Skin_surface_3> skin(new Skin_surface_3(
+        boost::shared_ptr<Skin_surface_3> skin;
+        if (!data().m_input_points.data().empty()) {
+            skin = boost::shared_ptr<Skin_surface_3>(new Skin_surface_3(
                         data().m_input_points.data().begin(),
                         data().m_input_points.data().end(),
                         data().m_shrinkfactor.data(),
                         false));
+        }
 
-        typedef CGAL::Triangulated_mixed_complex_observer_3<Skin_surface_3::TMC, Skin_surface_3> Observer;
-        typedef CGAL::Mixed_complex_triangulator_3<
-          Skin_surface_3::Regular,
-          Skin_surface_3::TMC,
-          Observer>  Mixed_complex_triangulator;
-        double shrink_factor = data().m_shrinkfactor.data();
-        Observer observer(shrink_factor);
-        Mixed_complex_triangulator(skin->regular(), shrink_factor, skin->triangulated_mixed_complex(), observer, true);
+//        typedef CGAL::Triangulated_mixed_complex_observer_3<Skin_surface_3::TMC, Skin_surface_3> Observer;
+//        typedef CGAL::Mixed_complex_triangulator_3<
+//          Skin_surface_3::Regular,
+//          Skin_surface_3::TMC,
+//          Observer>  Mixed_complex_triangulator;
+//        double shrink_factor = data().m_shrinkfactor.data();
+//        Observer observer(shrink_factor);
+//        Mixed_complex_triangulator triangulator(skin->regular(), shrink_factor, skin->triangulated_mixed_complex(), observer, true);
+//        triangulator.remove_small_edges();
+
 
         data().m_skin_surface.swap_data(skin);
 
@@ -198,7 +205,9 @@ bool Model::update_skin_surface_mesh()
         Polyhedron mesh;
         boost::shared_ptr<Skin_surface_3> skin_surface = data().m_skin_surface.data();
 
-        CGAL::mesh_skin_surface_3(*skin_surface, mesh);
+        if (skin_surface != NULL) {
+            CGAL::mesh_skin_surface_3(*skin_surface, mesh);
+        }
         data().m_skin_surface_mesh.set_data(mesh);
 
 
@@ -219,24 +228,26 @@ bool Model::update_osg_skin_surface_mesh()
         if (geode->getNumDrawables() > 0)
             geode->removeDrawables(0, geode->getNumDrawables());
 
-        std::vector<osg::Geometry *> geometries = CgalOsgUtils::convert_skin_mesh(*skin, p);
-        int i=0;
-        BOOST_FOREACH(osg::Geometry *geometry, geometries) {
-            geometry->setUseDisplayList(false);
-            geometry->setUseVertexBufferObjects(true);
+        if (skin != NULL) {
+            std::vector<osg::Geometry *> geometries = CgalOsgUtils::convert_skin_mesh(*skin, p);
+            int i=0;
+            BOOST_FOREACH(osg::Geometry *geometry, geometries) {
+                geometry->setUseDisplayList(false);
+                geometry->setUseVertexBufferObjects(true);
 
-            osg::Material *material = new osg::Material();
-            osg::Vec4 color;
-            switch (i++) {
-            case 0: color = osg::Vec4(0,0,1,1); break;
-            case 1: color = osg::Vec4(0,1,0,1); break;
-            case 2: color = osg::Vec4(1,0,0,1); break;
-            case 3: color = osg::Vec4(0,1,1,1); break;
+                osg::Material *material = new osg::Material();
+                osg::Vec4 color;
+                switch (i++) {
+                case 0: color = osg::Vec4(0,0,1,1); break;
+                case 1: color = osg::Vec4(0,1,0,1); break;
+                case 2: color = osg::Vec4(1,0,0,1); break;
+                case 3: color = osg::Vec4(0,1,1,1); break;
+                }
+                material->setDiffuse(osg::Material::FRONT, color);
+                geometry->getOrCreateStateSet()->setAttribute(material);
+
+                geode->addDrawable(geometry);
             }
-            material->setDiffuse(osg::Material::FRONT, color);
-            geometry->getOrCreateStateSet()->setAttribute(material);
-
-            geode->addDrawable(geometry);
         }
 
         // Update cache
