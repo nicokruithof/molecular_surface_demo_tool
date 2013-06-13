@@ -17,6 +17,8 @@ public:
     , m_input_points("input_points")
     , m_osg_input_points("osg_input_points", new osg::Geode())
     , m_shrinkfactor("shrink_factor", 0.5)
+    , m_subdivision(0)
+    , m_prev_subdivision(0)
     , m_skin_surface("skin_surface")
     , m_skin_surface_mesh("skin_surface_mesh")
     , m_osg_skin_surface_mesh("osg_skin_surface_mesh", new osg::Geode())
@@ -31,6 +33,8 @@ public:
     void clear() {
         m_input_points.clear();
         m_shrinkfactor.set_data(0.5);
+        m_subdivision = 0;
+        m_prev_subdivision = 0;
         m_skin_surface.set_data(boost::shared_ptr<Skin_surface_3>());
 
         osg::Geode *geode;
@@ -53,6 +57,8 @@ public: // Atoms
 
 public: // Skin surface
     CachedClass< double >                  m_shrinkfactor;
+    int                                    m_subdivision;
+    int                                    m_prev_subdivision;
 
     CachedClass< boost::shared_ptr<Skin_surface_3> > m_skin_surface;
     CachedClass< Polyhedron >                        m_skin_surface_mesh;

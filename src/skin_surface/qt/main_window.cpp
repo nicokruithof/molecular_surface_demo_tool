@@ -1,5 +1,7 @@
 #include <qt/main_window.h>
 
+#include <math.h>
+
 #include <iostream>
 
 #include <boost/foreach.hpp>
@@ -133,6 +135,11 @@ void MainWindow::on_shrink_factor_slider_valueChanged() {
     double shrink_factor = m_ui->shrink_factor_slider->value()*1.0/m_ui->shrink_factor_slider->maximum();
     m_model.set_shrink_factor(shrink_factor);
     m_ui->shrink_factor_spinbox->setValue(shrink_factor);
+}
+
+void MainWindow::on_subdivision_slider_valueChanged() {
+    int subdivision = static_cast<int>(m_ui->subdivision_slider->value());
+    m_model.set_subdivision(subdivision);
 }
 
 void MainWindow::on_shrink_factor_spinbox_valueChanged()

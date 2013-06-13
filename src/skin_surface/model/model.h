@@ -26,6 +26,7 @@ public:
     bool update();
 
     void set_shrink_factor(double shrink_factor);
+    void set_subdivision(int subdiv);
     void show_balls(bool b);
     void show_skin_surface(bool b);
     bool subdivide_skin_surface_mesh();

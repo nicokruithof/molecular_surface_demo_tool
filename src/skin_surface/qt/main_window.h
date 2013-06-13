@@ -35,6 +35,8 @@ private slots:
 
   void on_shrink_factor_slider_valueChanged();
   void on_shrink_factor_spinbox_valueChanged();
+
+  void on_subdivision_slider_valueChanged();
 private:
 
   /// User interface

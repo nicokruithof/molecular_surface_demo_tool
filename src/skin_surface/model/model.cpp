@@ -209,10 +209,15 @@ bool Model::update_skin_surface_mesh()
             CGAL::mesh_skin_surface_3(*skin_surface, mesh);
         }
         data().m_skin_surface_mesh.set_data(mesh);
-
+        data().m_prev_subdivision = 0;
 
         // Update cache
         data().m_skin_surface_mesh.make_up_to_date(data().m_skin_surface);
+    }
+    while (data().m_prev_subdivision < data().m_subdivision) {
+        std::cout << "Subdiv" << data().m_prev_subdivision << std::endl;
+        subdivide_skin_surface_mesh();
+        data().m_prev_subdivision ++;
     }
     return true;
 }
@@ -280,4 +285,9 @@ void Model::set_shrink_factor(double shrink_factor)
 {
     shrink_factor = std::max(0.01, std::min(1-0.01, shrink_factor));
     data().m_shrinkfactor.set_data(shrink_factor);
+}
+
+void Model::set_subdivision(int subdiv)
+{
+    data().m_subdivision = subdiv;
 }
