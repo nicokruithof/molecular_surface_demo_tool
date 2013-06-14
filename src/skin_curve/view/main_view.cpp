@@ -4,11 +4,13 @@
 
 MainView::MainView(QWidget * parent, Qt::WindowFlags f)
   : QWidget(parent, f)
+  , m_model(new Model())
+  , m_controller(new Controller(m_model))
 {
 }
 
 
-void MainView::paintEvent(QPaintEvent *event)
+void MainView::paintEvent(QPaintEvent * /*event*/)
 {
   QPainter painter(this);
 
@@ -32,7 +34,7 @@ void MainView::mousePressEvent( QMouseEvent * event )
   m_circle_center = event->pos();
   m_radius = 0;
 }
-void MainView::mouseReleaseEvent( QMouseEvent * event )
+void MainView::mouseReleaseEvent( QMouseEvent * /*event*/ )
 {
   if (m_controller)
     m_controller->insert(m_circle_center.x(), m_circle_center.y(), m_radius*m_radius);

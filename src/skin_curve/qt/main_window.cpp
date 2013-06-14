@@ -18,7 +18,7 @@ MainWindow::~MainWindow() {
     delete(m_ui);
 }
 
-void MainWindow::paintEvent(QPaintEvent *event)
+void MainWindow::paintEvent(QPaintEvent * /*event*/)
 {
     // m_model.update();
     // m_ui->osg_main_widget->set_scene(m_model.scene());

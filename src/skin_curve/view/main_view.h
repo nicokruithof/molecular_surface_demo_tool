@@ -10,7 +10,7 @@
 #include <controller/controller.h>
 
 class MainView : public QWidget {
-  Q_OBJECT;
+  Q_OBJECT
 
 public:
   MainView(QWidget * parent = 0, Qt::WindowFlags f = 0);

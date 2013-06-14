@@ -44,7 +44,7 @@ void MainWindow::open(const std::string &filename)
     QtCompositeRenderer::composite_viewer()->getView(0)->home();
 }
 
-void MainWindow::paintEvent(QPaintEvent *event)
+void MainWindow::paintEvent(QPaintEvent * /*event*/)
 {
     m_model.update();
     m_ui->osg_main_widget->set_scene(m_model.scene());
@@ -62,7 +62,7 @@ void MainWindow::on_actionShow_skin_surface_toggled(bool b)
 {
     m_model.show_skin_surface(b);
 }
-void MainWindow::on_actionSubdivide_skin_surface_triggered(bool checked)
+void MainWindow::on_actionSubdivide_skin_surface_triggered(bool /*checked*/)
 {
     m_model.subdivide_skin_surface_mesh();
     m_model.update();
@@ -71,7 +71,7 @@ void MainWindow::on_actionColor_skin_surface_triggered(bool checked)
 {
     m_model.color_skin_surface(checked);
 }
-void MainWindow::on_actionShow_statistics_triggered(bool checked)
+void MainWindow::on_actionShow_statistics_triggered(bool /*checked*/)
 {
     m_statistics_dialog->hide();
 
