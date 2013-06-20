@@ -38,4 +38,5 @@ add_executable(skin_surface_viewer
   ${qt_resources} ${qt_ui_resource})
 
 #add_dependencies(skin_surface_viewer)
+
 target_link_libraries(skin_surface_viewer ${OPENSCENEGRAPH_LIBRARIES} ${QT_LIBRARIES} ${OSG_QT} ${CGAL_LIBRARIES})

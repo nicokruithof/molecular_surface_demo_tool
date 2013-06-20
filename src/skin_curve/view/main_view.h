@@ -14,6 +14,7 @@ class MainView : public QWidget {
 
 public:
   MainView(QWidget * parent = 0, Qt::WindowFlags f = 0);
+  void set_model(Model *model);
 
   virtual void paintEvent(QPaintEvent *event);
 
@@ -22,8 +23,8 @@ public:
   virtual void mouseReleaseEvent( QMouseEvent * event );
 
 private:
-  boost::shared_ptr<Model> m_model;
-  boost::shared_ptr<Controller> m_controller;
+  Model *m_model;
+  Controller m_controller;
 
 private:
   QPoint m_circle_center;

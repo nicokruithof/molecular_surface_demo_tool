@@ -2,6 +2,7 @@
 #define MODEL_CACHED_CLASS_H_
 
 #include <map>
+#include <boost/foreach.hpp>
 
 template<class T>
 class CachedClass
@@ -10,26 +11,19 @@ public:
     typedef T value_type;
 
     CachedClass(const std::string &name, const T &initial_value = T())
-                    : m_data(initial_value), m_name(name), m_version(0)
+    : m_data(initial_value), m_name(name), m_version(0)
     {
     }
 
-    const std::string &name() const
+    void add_dependency(boost::shared_ptr<CachedClass> dependency)
     {
-        return m_name;
+        m_dependencies[dependency] = -1;
     }
-    size_t version() const
-    {
-        return m_version;
-    }
-    const T &data() const
-    {
-        return m_data;
-    }
-    T &data_non_const()
-    {
-        return m_data;
-    }
+
+    const std::string &name() const { return m_name; }
+    size_t version() const { return m_version; }
+    const T &data() const { return m_data; }
+    T &data_non_const() { return m_data; }
     T &modify_data()
     {
         ++m_version;
@@ -58,18 +52,28 @@ public:
         if (it != m_dependencies.end()) return (it->second == other.version());
         return false;
     }
+
+private:
+    void update() {
+        typename std::map<boost::shared_ptr<CachedClass>, size_t>::iterator dependency
+        BOOST_FOREACH(dependency, m_dependencies) {
+            if (depe)
+        }
+    }
+
     template<class T2>
     void make_up_to_date(const CachedClass<T2> &other)
     {
         m_dependencies[other.name()] = other.version();
     }
 
-public:
+private:
     T m_data;
 
 private:
     std::string m_name;
     size_t m_version;
     std::map<std::string, size_t> m_dependencies;
+    std::map<boost::shared_ptr<CachedClass>, size_t> m_dependencies;
 };
 #endif /* MODEL_CACHED_CLASS_H_ */
