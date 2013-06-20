@@ -56,5 +56,6 @@ void MainView::set_model(Model* model)
 void MainView::mouseReleaseEvent( QMouseEvent * /*event*/ )
 {
     m_controller.insert(m_circle_center.x(), m_circle_center.y(), m_radius*m_radius);
+    m_radius = -1;
     update();
 }

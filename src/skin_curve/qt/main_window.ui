@@ -114,19 +114,10 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionShow_balls"/>
-   <addaction name="actionShow_skin_surface"/>
-  </widget>
-  <widget class="QToolBar" name="toolBar">
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
+   <addaction name="actionShow_circles"/>
+   <addaction name="actionShow_Voronoi"/>
+   <addaction name="actionShow_Delaunay"/>
+   <addaction name="actionShow_skin_curve"/>
   </widget>
   <action name="action_Quit">
    <property name="text">
@@ -160,15 +151,15 @@
     <string>Ctrl+P</string>
    </property>
   </action>
-  <action name="actionShow_balls">
+  <action name="actionShow_circles">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
-    <string>Show balls</string>
+    <string>Circles</string>
    </property>
    <property name="toolTip">
     <string>Show vertices</string>
@@ -177,15 +168,15 @@
     <string>Alt+B</string>
    </property>
   </action>
-  <action name="actionShow_skin_surface">
+  <action name="actionShow_skin_curve">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="checked">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="text">
-    <string>Show skin surface</string>
+    <string>Skin</string>
    </property>
    <property name="shortcut">
     <string>Alt+S</string>
@@ -219,6 +210,25 @@
    </property>
    <property name="shortcut">
     <string>Alt+C</string>
+   </property>
+  </action>
+  <action name="actionShow_Voronoi">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Voronoi</string>
+   </property>
+  </action>
+  <action name="actionShow_Delaunay">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Delaunay</string>
    </property>
   </action>
  </widget>
