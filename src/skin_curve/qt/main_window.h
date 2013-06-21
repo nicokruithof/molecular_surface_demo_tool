@@ -4,10 +4,12 @@
 #include <QtGui/QMainWindow>
 
 #include <string>
+
 #include <model/model.h>
 
 #include <view/delaunay_view.h>
 #include <view/skin_curve_view.h>
+#include <view/union_of_balls_view.h>
 #include <view/voronoi_view.h>
 
 namespace Ui {
@@ -34,14 +36,15 @@ private slots:
 
 private:
 
-/// User interface
-Ui::MainWindow       *m_ui;
+    /// User interface
+    Ui::MainWindow       *m_ui;
 
-Model                m_model;
+    Model                m_model;
 
-DelaunayView         m_delaunay_view;
-VoronoiView          m_voronoi_view;
-SkinCurveView        m_skin_curve_view;
+    DelaunayView         m_delaunay_view;
+    UnionOfBallsView     m_union_of_balls_view;
+    VoronoiView          m_voronoi_view;
+    SkinCurveView        m_skin_curve_view;
 };
 
 #endif // MAINWINDOW

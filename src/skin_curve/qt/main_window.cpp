@@ -43,6 +43,8 @@ void MainWindow::draw(QPainter &painter)
 
     if (m_ui->actionShow_skin_curve->isChecked())
         m_skin_curve_view.draw(painter, m_model.regular(), m_model.shrink_factor());
+
+    m_union_of_balls_view.draw(painter, m_model.regular());
 }
 
 void MainWindow::on_shrink_factor_slider_valueChanged()

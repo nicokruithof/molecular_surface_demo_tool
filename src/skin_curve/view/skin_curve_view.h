@@ -10,10 +10,12 @@ public:
     void draw(QPainter &painter, Regular &regular, double shrink_factor);
 
 private:
-    void draw(QPainter &painter, Regular::Finite_vertices_iterator &vit, double shrink_factor);
+    void draw(QPainter &painter, Regular &regular, Regular::Finite_vertices_iterator &vit, double shrink_factor);
 
 private:
     void discretize_segments(const Weighted_point &wp, std::list<Segment> &segments);
+
+    void clip(std::list<Segment> &segments, const Line &line);
 };
 
 #endif // VIEW_SKIN_CURVE_VIEW_H

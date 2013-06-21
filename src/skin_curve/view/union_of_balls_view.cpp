@@ -1,8 +1,9 @@
-#include <view/skin_curve_view.h>
+#include <view/union_of_balls_view.h>
+#include <view/utils.h>
 
 #include <boost/foreach.hpp>
 
-void SkinCurveView::draw(QPainter &painter, Regular &regular, double shrink_factor)
+void UnionOfBallsView::draw(QPainter &painter, Regular &regular)
 {
     QPen pen;
     pen.setColor(QColor(255, 0, 0));
@@ -11,34 +12,35 @@ void SkinCurveView::draw(QPainter &painter, Regular &regular, double shrink_fact
 
     Regular::Finite_vertices_iterator vit;
     for (vit = regular.finite_vertices_begin(); vit != regular.finite_vertices_end(); ++vit) {
-        draw(painter, regular, vit, shrink_factor);
+        draw(painter, regular, vit);
     }
 
 }
 
-void SkinCurveView::draw(QPainter &painter, Regular &regular, Regular::Finite_vertices_iterator &vit, double shrink_factor)
+void UnionOfBallsView::draw(QPainter &painter, Regular &regular, Regular::Finite_vertices_iterator &vit)
 {
     std::list<Segment> segments;
-    discretize_segments(Weighted_point(vit->point(), shrink_factor*vit->point().weight()), segments);
+    discretize_segments(vit->point(), segments);
 
-    Weighted_point wp = vit->point();
-    Regular::Geom_traits gt = regular.geom_traits();
-    Regular::Vertex_circulator adj_vit = regular.incident_vertices(vit);
-    Regular::Vertex_circulator adj_vit_start = adj_vit;
-    do {
-        if (!regular.is_infinite(adj_vit)) {
-            Line l = gt.construct_radical_axis_2_object()(wp, adj_vit->point());
-            clip(segments, l);
-        }
-    } while (adj_vit != adj_vit_start);
-
+    if (regular.dimension() > 0) {
+        Weighted_point wp = vit->point();
+        Regular::Geom_traits gt = regular.geom_traits();
+        Regular::Vertex_circulator adj_vit = regular.incident_vertices(vit);
+        Regular::Vertex_circulator adj_vit_start = adj_vit;
+        do {
+            if (!regular.is_infinite(adj_vit)) {
+                Line l = gt.construct_radical_axis_2_object()(wp, adj_vit->point());
+                clip(segments, l);
+            }
+        } while (++adj_vit != adj_vit_start);
+    }
 
     BOOST_FOREACH(Segment s, segments) {
         painter.drawLine(s.point(0).x(), s.point(0).y(), s.point(1).x(), s.point(1).y());
     }
 }
 
-void SkinCurveView::discretize_segments(const Weighted_point &wp, std::list<Segment> &segments)
+void UnionOfBallsView::discretize_segments(const Weighted_point &wp, std::list<Segment> &segments)
 {
     segments.clear();
     if (wp.weight() <= 0) return;
@@ -66,16 +68,16 @@ void SkinCurveView::discretize_segments(const Weighted_point &wp, std::list<Segm
 
 }
 
-void SkinCurveView::clip(std::list<Segment> &segments, const Line &line)
+void UnionOfBallsView::clip(std::list<Segment> &segments, const Line &line)
 {
     std::list<Segment>::iterator it = segments.begin();
     while (it != segments.end()) {
         CGAL::Oriented_side s0 = line.oriented_side((*it)[0]);
         CGAL::Oriented_side s1 = line.oriented_side((*it)[1]);
-        if (s0 == CGAL::RIGHT_TURN && s1 == CGAL::RIGHT_TURN) {
+        if (s0 == CGAL::RIGHT_TURN || s1 == CGAL::RIGHT_TURN) {
             std::list<Segment>::iterator it2 = it;
             ++it;
-            segments.remove(*it2);
+            segments.erase(it2);
         } else {
             ++it;
         }
