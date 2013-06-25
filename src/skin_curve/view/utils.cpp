@@ -1,5 +1,7 @@
 #include <view/utils.h>
 
+#include <boost/foreach.hpp>
+
 void operator<<(QPainter &painter, const Segment &s)
 {
     painter.drawLine(s[0][0], s[0][1], s[1][0], s[1][1]);
@@ -25,3 +27,9 @@ void operator<<(QPainter &painter, const Line &l)
     painter << Segment(s-d, s+d);
 }
 
+void operator<<(QPainter &painter, const std::list<Segment> &segments)
+{
+    BOOST_FOREACH(Segment s, segments) {
+        painter.drawLine(s.point(0).x(), s.point(0).y(), s.point(1).x(), s.point(1).y());
+    }
+}

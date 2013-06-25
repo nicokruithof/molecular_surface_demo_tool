@@ -1,9 +1,12 @@
 #include <view/skin_curve_view.h>
+#include <view/utils.h>
 
 #include <boost/foreach.hpp>
 
 void SkinCurveView::draw(QPainter &painter, Regular &regular, double shrink_factor)
 {
+    shrink_factor = std::min(std::max(shrink_factor, 0.001), 0.999);
+
     QPen pen;
     pen.setColor(QColor(255, 0, 0));
     //pen.setWidth(5);
@@ -13,71 +16,62 @@ void SkinCurveView::draw(QPainter &painter, Regular &regular, double shrink_fact
     for (vit = regular.finite_vertices_begin(); vit != regular.finite_vertices_end(); ++vit) {
         draw(painter, regular, vit, shrink_factor);
     }
+    Regular::Finite_faces_iterator fit;
+    for (fit = regular.finite_faces_begin(); fit != regular.finite_faces_end(); ++fit) {
+        draw(painter, regular, fit, shrink_factor);
+    }
 
 }
 
 void SkinCurveView::draw(QPainter &painter, Regular &regular, Regular::Finite_vertices_iterator &vit, double shrink_factor)
 {
     std::list<Segment> segments;
-    discretize_segments(Weighted_point(vit->point(), shrink_factor*vit->point().weight()), segments);
+    Weighted_point wp(vit->point(), shrink_factor*vit->point().weight());
 
-    Weighted_point wp = vit->point();
-    Regular::Geom_traits gt = regular.geom_traits();
-    Regular::Vertex_circulator adj_vit = regular.incident_vertices(vit);
-    Regular::Vertex_circulator adj_vit_start = adj_vit;
-    do {
-        if (!regular.is_infinite(adj_vit)) {
-            Line l = gt.construct_radical_axis_2_object()(wp, adj_vit->point());
-            clip(segments, l);
-        }
-    } while (adj_vit != adj_vit_start);
+    discretize_segments(wp, segments);
 
-
-    BOOST_FOREACH(Segment s, segments) {
-        painter.drawLine(s.point(0).x(), s.point(0).y(), s.point(1).x(), s.point(1).y());
+    if (regular.dimension() > 0) {
+        Regular::Geom_traits gt = regular.geom_traits();
+        Regular::Vertex_circulator adj_vit = regular.incident_vertices(vit);
+        Regular::Vertex_circulator adj_vit_start = adj_vit;
+        do {
+            if (!regular.is_infinite(adj_vit)) {
+                Line l = gt.construct_radical_axis_2_object()(wp, adj_vit->point());
+                l = Line(wp + shrink_factor*(l.point(0)-wp), l.direction());
+                clip(segments, l);
+                //clip(segments, Line(l.point(0), l.point(1)));
+            }
+        } while (++adj_vit != adj_vit_start);
     }
+
+    painter << segments;
 }
 
-void SkinCurveView::discretize_segments(const Weighted_point &wp, std::list<Segment> &segments)
+void SkinCurveView::draw(QPainter &painter, Regular &/*regular*/, Regular::Finite_faces_iterator &fit, double shrink_factor)
 {
-    segments.clear();
-    if (wp.weight() <= 0) return;
+    Weighted_point wp = focus(fit);
+    wp = Weighted_point(wp, (1-shrink_factor) * wp.weight());
 
-    double r = sqrt(wp.weight());
-    Vector dx(r, 0), dy(0, r);
-    segments.push_back(Segment(wp+dx, wp+dy));
-    segments.push_back(Segment(wp+dy, wp-dx));
-    segments.push_back(Segment(wp-dx, wp-dy));
-    segments.push_back(Segment(wp-dy, wp+dx));
+    std::list<Segment> segments;
+    discretize_segments(wp, segments);
 
-    std::list<Segment> segments2;
-    for (int i=0; i<5; ++i) {
-        segments2.clear();
-        BOOST_FOREACH(Segment &s, segments) {
-            Bare_point m = CGAL::midpoint(s[0], s[1]);
-            Vector v = m-wp;
-            m = wp + sqrt(wp.weight()/v.squared_length()) * v;
-            segments2.push_back(Segment(s[0], m));
-            segments2.push_back(Segment(m, s[1]));
-        }
-        segments.swap(segments2);
+    for (int i=0; i<3; ++i) {
+        Line l(wp + (1-shrink_factor)*(fit->vertex(i)->point()-wp),
+               wp + (1-shrink_factor)*(fit->vertex((i+1)%3)->point()-wp));
+        clip(segments, l);
+        painter << l;
+//        Regular::Geom_traits gt = regular.geom_traits();
+//        Regular::Vertex_circulator adj_vit = regular.incident_vertices(vit);
+//        Regular::Vertex_circulator adj_vit_start = adj_vit;
+//        do {
+//            if (!regular.is_infinite(adj_vit)) {
+//                Line l = gt.construct_radical_axis_2_object()(wp, adj_vit->point());
+//                clip(segments, Line(l.point(0), l.point(1)));
+//            }
+//        } while (++adj_vit != adj_vit_start);
+//    }
+
     }
 
-
-}
-
-void SkinCurveView::clip(std::list<Segment> &segments, const Line &line)
-{
-    std::list<Segment>::iterator it = segments.begin();
-    while (it != segments.end()) {
-        CGAL::Oriented_side s0 = line.oriented_side((*it)[0]);
-        CGAL::Oriented_side s1 = line.oriented_side((*it)[1]);
-        if (s0 == CGAL::RIGHT_TURN && s1 == CGAL::RIGHT_TURN) {
-            std::list<Segment>::iterator it2 = it;
-            ++it;
-            segments.remove(*it2);
-        } else {
-            ++it;
-        }
-    }
+    painter << segments;
 }

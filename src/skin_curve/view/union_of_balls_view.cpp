@@ -35,9 +35,7 @@ void UnionOfBallsView::draw(QPainter &painter, Regular &regular, Regular::Finite
         } while (++adj_vit != adj_vit_start);
     }
 
-    BOOST_FOREACH(Segment s, segments) {
-        painter.drawLine(s.point(0).x(), s.point(0).y(), s.point(1).x(), s.point(1).y());
-    }
+    painter << segments;
 }
 
 void UnionOfBallsView::discretize_segments(const Weighted_point &wp, std::list<Segment> &segments)
@@ -82,4 +80,17 @@ void UnionOfBallsView::clip(std::list<Segment> &segments, const Line &line)
             ++it;
         }
     }
+}
+
+Weighted_point UnionOfBallsView::focus(const Weighted_point &wp1, const Weighted_point &wp2) const
+{
+    Weighted_point::Weight sqr_d = squared_distance(wp1.point(), wp2.point());
+    Weighted_point::Weight m_fact = 0.5f + (wp2.weight()-wp1.weight())/(2*sqr_d);
+    return wp2 + m_fact * (wp1-wp2);
+}
+Weighted_point UnionOfBallsView::focus(const Weighted_point &wp1, const Weighted_point &wp2, const Weighted_point &wp3) const
+{
+    Gt gt;
+    Bare_point focus = gt.construct_weighted_circumcenter_2_object()(wp1, wp2, wp3);
+    return Weighted_point(focus, CGAL::squared_distance(focus, wp1)-wp1.weight());
 }

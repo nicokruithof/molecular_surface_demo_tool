@@ -13,6 +13,11 @@ MainWindow::MainWindow()
 {
     m_ui->setupUi(this);
     m_ui->main_view->set_model(&m_model);
+    m_model.insert(Weighted_point(Bare_point(300,200), 10000));
+    m_model.insert(Weighted_point(Bare_point(490,200), 10000));
+    m_model.insert(Weighted_point(Bare_point(375,350), 10000));
+
+    m_ui->actionShow_skin_curve->setChecked(true);
 }
 
 MainWindow::~MainWindow() {
