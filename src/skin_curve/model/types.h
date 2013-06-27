@@ -18,5 +18,6 @@ typedef Gt::Ray_2                                             Ray;
 typedef Gt::Segment_2                                         Segment;
 typedef Gt::Vector_2                                          Vector;
 typedef Gt::Line_2                                            Line;
+typedef Gt::Direction_2                                       Direction;
 
 #endif /* MODEL_TYPES_H_ */

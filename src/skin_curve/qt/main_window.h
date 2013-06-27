@@ -8,6 +8,7 @@
 #include <model/model.h>
 
 #include <view/delaunay_view.h>
+#include <view/mixed_complex_view.h>
 #include <view/skin_curve_view.h>
 #include <view/union_of_balls_view.h>
 #include <view/voronoi_view.h>
@@ -45,6 +46,7 @@ private:
     UnionOfBallsView     m_union_of_balls_view;
     VoronoiView          m_voronoi_view;
     SkinCurveView        m_skin_curve_view;
+    MixedComplexView     m_mixed_complex_view;
 };
 
 #endif // MAINWINDOW

@@ -20,7 +20,7 @@ void UnionOfBallsView::draw(QPainter &painter, Regular &regular)
 void UnionOfBallsView::draw(QPainter &painter, Regular &regular, Regular::Finite_vertices_iterator &vit)
 {
     std::list<Segment> segments;
-    discretize_segments(vit->point(), segments);
+    generate_circle(vit->point(), segments);
 
     if (regular.dimension() > 0) {
         Weighted_point wp = vit->point();
@@ -38,7 +38,7 @@ void UnionOfBallsView::draw(QPainter &painter, Regular &regular, Regular::Finite
     painter << segments;
 }
 
-void UnionOfBallsView::discretize_segments(const Weighted_point &wp, std::list<Segment> &segments)
+void UnionOfBallsView::generate_circle(const Weighted_point &wp, std::list<Segment> &segments)
 {
     segments.clear();
     if (wp.weight() <= 0) return;
@@ -51,7 +51,7 @@ void UnionOfBallsView::discretize_segments(const Weighted_point &wp, std::list<S
     segments.push_back(Segment(wp-dy, wp+dx));
 
     std::list<Segment> segments2;
-    for (int i=0; i<5; ++i) {
+    for (int i=0; i<8; ++i) {
         segments2.clear();
         BOOST_FOREACH(Segment &s, segments) {
             Bare_point m = CGAL::midpoint(s[0], s[1]);
@@ -72,12 +72,20 @@ void UnionOfBallsView::clip(std::list<Segment> &segments, const Line &line)
     while (it != segments.end()) {
         CGAL::Oriented_side s0 = line.oriented_side((*it)[0]);
         CGAL::Oriented_side s1 = line.oriented_side((*it)[1]);
-        if (s0 == CGAL::RIGHT_TURN || s1 == CGAL::RIGHT_TURN) {
+        if ((s0 == CGAL::LEFT_TURN) && (s1 == CGAL::LEFT_TURN)) {
+            ++it;
+//        } else if (s0 != s1) {
+//            Bare_point p;
+//            CGAL::assign(p, CGAL::intersection(line, it->supporting_line()));
+//            if (s0 != CGAL::LEFT_TURN)
+//                *it = Segment(p, (*it)[1]);
+//            else
+//                *it = Segment(p, (*it)[0]);
+//            ++it;
+        } else {
             std::list<Segment>::iterator it2 = it;
             ++it;
             segments.erase(it2);
-        } else {
-            ++it;
         }
     }
 }
@@ -86,7 +94,8 @@ Weighted_point UnionOfBallsView::focus(const Weighted_point &wp1, const Weighted
 {
     Weighted_point::Weight sqr_d = squared_distance(wp1.point(), wp2.point());
     Weighted_point::Weight m_fact = 0.5f + (wp2.weight()-wp1.weight())/(2*sqr_d);
-    return wp2 + m_fact * (wp1-wp2);
+    Bare_point p = wp1 + m_fact * (wp2-wp1);
+    return Weighted_point(p, CGAL::squared_distance(p, wp1) - wp1.weight());
 }
 Weighted_point UnionOfBallsView::focus(const Weighted_point &wp1, const Weighted_point &wp2, const Weighted_point &wp3) const
 {

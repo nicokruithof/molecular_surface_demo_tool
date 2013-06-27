@@ -30,6 +30,8 @@ void operator<<(QPainter &painter, const Line &l)
 void operator<<(QPainter &painter, const std::list<Segment> &segments)
 {
     BOOST_FOREACH(Segment s, segments) {
+//        painter.drawPoint(s.point(0).x(), s.point(0).y());
+//        painter.drawPoint(s.point(1).x(), s.point(1).y());
         painter.drawLine(s.point(0).x(), s.point(0).y(), s.point(1).x(), s.point(1).y());
     }
 }

@@ -29,6 +29,13 @@ private:
 private:
   QPoint m_circle_center;
   double m_radius;
+
+  enum ModificationType {
+    CREATE,
+    MODIFY
+  } m_modification_type;
+
+  Regular::Vertex_handle m_vh;
 };
 
 #endif // VIEW_MAIN_VIEW_H

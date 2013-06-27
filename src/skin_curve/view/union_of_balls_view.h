@@ -13,10 +13,15 @@ private:
     void draw(QPainter &painter, Regular &regular, Regular::Finite_vertices_iterator &vit);
 
 protected:
-    void discretize_segments(const Weighted_point &wp, std::list<Segment> &segments);
+    void generate_circle(const Weighted_point &wp, std::list<Segment> &segments);
 
     void clip(std::list<Segment> &segments, const Line &line);
 
+    inline Weighted_point focus(Regular::Finite_edges_iterator eit) {
+        Regular::Face_handle fh = eit->first;
+        int i = eit->second;
+        return focus(fh->vertex((i+1)%3)->point(), fh->vertex((i+2)%3)->point());
+    }
     inline Weighted_point focus(Regular::Finite_faces_iterator fit) {
         return focus(fit->vertex(0)->point(), fit->vertex(1)->point(), fit->vertex(2)->point());
     }

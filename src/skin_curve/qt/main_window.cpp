@@ -18,6 +18,7 @@ MainWindow::MainWindow()
     m_model.insert(Weighted_point(Bare_point(375,350), 10000));
 
     m_ui->actionShow_skin_curve->setChecked(true);
+    m_ui->actionShow_union->setChecked(false);
 }
 
 MainWindow::~MainWindow() {
@@ -49,7 +50,10 @@ void MainWindow::draw(QPainter &painter)
     if (m_ui->actionShow_skin_curve->isChecked())
         m_skin_curve_view.draw(painter, m_model.regular(), m_model.shrink_factor());
 
-    m_union_of_balls_view.draw(painter, m_model.regular());
+    if (m_ui->actionShow_union->isChecked())
+        m_union_of_balls_view.draw(painter, m_model.regular());
+
+    m_mixed_complex_view.draw(painter, m_model.regular(), m_model.shrink_factor());
 }
 
 void MainWindow::on_shrink_factor_slider_valueChanged()
