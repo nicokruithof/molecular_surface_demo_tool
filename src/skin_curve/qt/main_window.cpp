@@ -13,9 +13,9 @@ MainWindow::MainWindow()
 {
     m_ui->setupUi(this);
     m_ui->main_view->set_model(&m_model);
-    m_model.insert(Weighted_point(Bare_point(300,200), 10000));
-    m_model.insert(Weighted_point(Bare_point(490,200), 10000));
-    m_model.insert(Weighted_point(Bare_point(375,350), 10000));
+//    m_model.insert(Weighted_point(Bare_point(300,200), 10000));
+//    m_model.insert(Weighted_point(Bare_point(490,200), 10000));
+//    m_model.insert(Weighted_point(Bare_point(375,350), 10000));
 
     m_ui->actionShow_skin_curve->setChecked(true);
     m_ui->actionShow_union->setChecked(false);
@@ -41,19 +41,33 @@ void MainWindow::draw(QPainter &painter)
         }
     }
 
-    if (m_ui->actionShow_Voronoi->isChecked())
+    if (m_ui->actionShow_Voronoi->isChecked()) {
+        std::cout << "voronoi" << std::endl;
         m_voronoi_view.draw(painter, m_model.regular());
+        std::cout << "/voronoi" << std::endl;
+    }
 
-    if (m_ui->actionShow_Delaunay->isChecked())
+    if (m_ui->actionShow_Delaunay->isChecked()) {
+        std::cout << "delaunay" << std::endl;
         m_delaunay_view.draw(painter, m_model.regular());
+        std::cout << "/delaunay" << std::endl;
+    }
 
-    if (m_ui->actionShow_skin_curve->isChecked())
-        m_skin_curve_view.draw(painter, m_model.regular(), m_model.shrink_factor());
+    if (m_ui->actionShow_skin_curve->isChecked()) {
+        std::cout << "skin" << std::endl;
+        m_skin_curve_view.draw(painter, m_model.regular(), m_model.shrink_factor(), true);
+        std::cout << "/skin" << std::endl;
+    }
 
-    if (m_ui->actionShow_union->isChecked())
+    if (m_ui->actionShow_union->isChecked()) {
+        std::cout << "union" << std::endl;
         m_union_of_balls_view.draw(painter, m_model.regular());
+        std::cout << "/union" << std::endl;
+    }
 
+    std::cout << "mixed" << std::endl;
     m_mixed_complex_view.draw(painter, m_model.regular(), m_model.shrink_factor());
+    std::cout << "/mixed" << std::endl;
 }
 
 void MainWindow::on_shrink_factor_slider_valueChanged()
@@ -68,6 +82,11 @@ void MainWindow::on_shrink_factor_spinbox_valueChanged()
     double shrink_factor = m_ui->shrink_factor_spinbox->value();
     m_model.set_shrink_factor(shrink_factor);
     m_ui->shrink_factor_slider->setValue(m_ui->shrink_factor_slider->maximum()*shrink_factor);
+    m_ui->main_view->update();
+}
+void MainWindow::on_probe_radius_slider_valueChanged()
+{
+    m_model.set_probe_radius(m_ui->probe_radius_slider->value());
     m_ui->main_view->update();
 }
 void MainWindow::on_actionShow_circles_toggled(bool) {

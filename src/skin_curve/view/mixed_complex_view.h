@@ -7,7 +7,7 @@
 
 class MixedComplexView {
 public:
-    void draw(QPainter &painter, Regular &regular, double s);
+    void draw(QPainter &painter, const Regular &regular, double s);
 };
 
 #endif // VIEW_MIXED_COMPLEX_VIEW_H

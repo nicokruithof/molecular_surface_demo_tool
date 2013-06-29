@@ -4,7 +4,7 @@
 
 #include <view/utils.h>
 
-void VoronoiView::draw(QPainter &painter, Regular &regular)
+void VoronoiView::draw(QPainter &painter, const Regular &regular)
 {
     QPen pen;
     pen.setColor(QColor(0, 255, 0));

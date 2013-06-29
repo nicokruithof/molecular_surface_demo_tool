@@ -9,12 +9,12 @@
 
 class SkinCurveView : public UnionOfBallsView {
 public:
-    void draw(QPainter &painter, Regular &regular, double shrink_factor);
+    void draw(QPainter &painter, const Regular &regular, double shrink_factor, bool use_colors);
 
 private:
-    void draw(QPainter &painter, Regular &regular, Regular::Finite_vertices_iterator &vit, double shrink_factor);
-    void draw(QPainter &painter, Regular &regular, Regular::Finite_edges_iterator &eit, double shrink_factor);
-    void draw(QPainter &painter, Regular &regular, Regular::Finite_faces_iterator &vit, double shrink_factor);
+    void draw(QPainter &painter, const Regular &regular, Regular::Finite_vertices_iterator &vit, double shrink_factor);
+    void draw(QPainter &painter, const Regular &regular, Regular::Finite_edges_iterator &eit, double shrink_factor);
+    void draw(QPainter &painter, const Regular &regular, Regular::Finite_faces_iterator &vit, double shrink_factor);
 
 protected:
     double stepSize;

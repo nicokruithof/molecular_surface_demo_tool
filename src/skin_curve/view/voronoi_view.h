@@ -7,7 +7,7 @@
 
 class VoronoiView {
 public:
-    void draw(QPainter &painter, Regular &regular);
+    void draw(QPainter &painter, const Regular &regular);
 };
 
 #endif // VIEW_VORONOI_VIEW_H

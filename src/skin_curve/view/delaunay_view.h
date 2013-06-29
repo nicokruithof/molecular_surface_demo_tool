@@ -7,7 +7,7 @@
 
 class DelaunayView {
 public:
-    void draw(QPainter &painter, Regular &regular);
+    void draw(QPainter &painter, const Regular &regular);
 };
 
 #endif // VIEW_DELAUNAY_VIEW_H

@@ -4,7 +4,7 @@
 
 #include <view/utils.h>
 
-void MixedComplexView::draw(QPainter &painter, Regular &regular, double s)
+void MixedComplexView::draw(QPainter &painter, const Regular &regular, double s)
 {
     QPen pen;
     pen.setColor(QColor(0, 0, 0));
@@ -32,7 +32,8 @@ void MixedComplexView::draw(QPainter &painter, Regular &regular, double s)
             painter << Segment(p0 + s * (ray.source()-p0), p1 + s * (ray.source()-p1));
         }
         else if (CGAL::assign(line,o)) {
-//            painter << line;
+            painter << Line(p0 + s * (line.point(0)-p0), line.direction());
+            painter << Line(p1 + s * (line.point(0)-p1), line.direction());
         }
     }
 

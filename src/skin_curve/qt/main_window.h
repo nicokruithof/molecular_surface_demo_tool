@@ -33,6 +33,7 @@ private slots:
     void on_actionShow_skin_curve_toggled(bool);
 
     void on_shrink_factor_slider_valueChanged();
+    void on_probe_radius_slider_valueChanged();
     void on_shrink_factor_spinbox_valueChanged();
 
 private:

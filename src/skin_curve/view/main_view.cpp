@@ -48,8 +48,8 @@ void MainView::mouseMoveEvent( QMouseEvent * event )
         if (m_vh != NULL) {
             double weight = (m_vh->point()-Bare_point(event->pos().x(), event->pos().y())).squared_length();
             Weighted_point wp(m_vh->point(), weight);
-            m_model->regular().remove(m_vh);
-            m_model->regular().insert(wp);
+            m_model->remove(m_vh->point());
+            m_model->insert(wp);
         }
         break;
     }

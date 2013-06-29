@@ -4,7 +4,7 @@
 
 #include <view/utils.h>
 
-void DelaunayView::draw(QPainter &painter, Regular &regular)
+void DelaunayView::draw(QPainter &painter, const Regular &regular)
 {
     QPen pen;
     pen.setColor(QColor(0, 0, 255));

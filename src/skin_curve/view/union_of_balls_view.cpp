@@ -3,7 +3,7 @@
 
 #include <boost/foreach.hpp>
 
-void UnionOfBallsView::draw(QPainter &painter, Regular &regular)
+void UnionOfBallsView::draw(QPainter &painter, const Regular &regular)
 {
     QPen pen;
     pen.setColor(QColor(255, 0, 0));
@@ -17,14 +17,14 @@ void UnionOfBallsView::draw(QPainter &painter, Regular &regular)
 
 }
 
-void UnionOfBallsView::draw(QPainter &painter, Regular &regular, Regular::Finite_vertices_iterator &vit)
+void UnionOfBallsView::draw(QPainter &painter, const Regular &regular, Regular::Finite_vertices_iterator &vit)
 {
     std::list<Segment> segments;
     generate_circle(vit->point(), segments);
 
     if (regular.dimension() > 0) {
         Weighted_point wp = vit->point();
-        Regular::Geom_traits gt = regular.geom_traits();
+        const Regular::Geom_traits &gt = regular.geom_traits();
         Regular::Vertex_circulator adj_vit = regular.incident_vertices(vit);
         Regular::Vertex_circulator adj_vit_start = adj_vit;
         do {
@@ -93,7 +93,7 @@ void UnionOfBallsView::clip(std::list<Segment> &segments, const Line &line)
 Weighted_point UnionOfBallsView::focus(const Weighted_point &wp1, const Weighted_point &wp2) const
 {
     Weighted_point::Weight sqr_d = squared_distance(wp1.point(), wp2.point());
-    Weighted_point::Weight m_fact = 0.5f + (wp2.weight()-wp1.weight())/(2*sqr_d);
+    Weighted_point::Weight m_fact = 0.5f + (wp1.weight()-wp2.weight())/(2*sqr_d);
     Bare_point p = wp1 + m_fact * (wp2-wp1);
     return Weighted_point(p, CGAL::squared_distance(p, wp1) - wp1.weight());
 }

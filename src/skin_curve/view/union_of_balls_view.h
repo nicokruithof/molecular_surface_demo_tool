@@ -7,10 +7,10 @@
 
 class UnionOfBallsView {
 public:
-    virtual void draw(QPainter &painter, Regular &regular);
+    virtual void draw(QPainter &painter, const Regular &regular);
 
 private:
-    void draw(QPainter &painter, Regular &regular, Regular::Finite_vertices_iterator &vit);
+    void draw(QPainter &painter, const Regular &regular, Regular::Finite_vertices_iterator &vit);
 
 protected:
     void generate_circle(const Weighted_point &wp, std::list<Segment> &segments);

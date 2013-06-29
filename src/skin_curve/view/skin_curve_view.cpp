@@ -3,24 +3,30 @@
 
 #include <boost/foreach.hpp>
 
-void SkinCurveView::draw(QPainter &painter, Regular &regular, double shrink_factor)
+void SkinCurveView::draw(QPainter &painter, const Regular &regular, double shrink_factor, bool use_colors)
 {
     stepSize = 1;
-    shrink_factor = std::min(std::max(shrink_factor, 0.001), 0.999);
 
     QPen pen;
     pen.setColor(QColor(255, 0, 0));
-    //pen.setWidth(5);
+    pen.setWidth(1);
     painter.setPen(pen);
 
+    use_colors = true;
+    if (use_colors) pen.setColor(QColor(255, 0, 0));
+    painter.setPen(pen);
     Regular::Finite_vertices_iterator vit;
     for (vit = regular.finite_vertices_begin(); vit != regular.finite_vertices_end(); ++vit) {
         draw(painter, regular, vit, shrink_factor);
     }
+    if (use_colors) pen.setColor(QColor(0, 255, 0));
+    painter.setPen(pen);
     Regular::Finite_edges_iterator eit;
     for (eit = regular.finite_edges_begin(); eit != regular.finite_edges_end(); ++eit) {
         draw(painter, regular, eit, shrink_factor);
     }
+    if (use_colors) pen.setColor(QColor(0, 0, 255));
+    painter.setPen(pen);
     Regular::Finite_faces_iterator fit;
     for (fit = regular.finite_faces_begin(); fit != regular.finite_faces_end(); ++fit) {
         draw(painter, regular, fit, shrink_factor);
@@ -28,22 +34,21 @@ void SkinCurveView::draw(QPainter &painter, Regular &regular, double shrink_fact
 
 }
 
-void SkinCurveView::draw(QPainter &painter, Regular &regular, Regular::Finite_vertices_iterator &vit, double shrink_factor)
+void SkinCurveView::draw(QPainter &painter, const Regular &regular, Regular::Finite_vertices_iterator &vit, double shrink_factor)
 {
     std::list<Segment> segments;
-    Weighted_point wp(vit->point(), shrink_factor*vit->point().weight());
+    Weighted_point wp = vit->point();
 
-    generate_circle(wp, segments);
+    generate_circle(Weighted_point(wp, shrink_factor*wp.weight()), segments);
 
     if (regular.dimension() > 0) {
-        Regular::Geom_traits gt = regular.geom_traits();
         Regular::Vertex_circulator adj_vit = regular.incident_vertices(vit);
         Regular::Vertex_circulator adj_vit_start = adj_vit;
         do {
             if (!regular.is_infinite(adj_vit)) {
+                Direction d = (wp-adj_vit->point()).perpendicular(CGAL::CLOCKWISE).direction();
                 Bare_point p = focus(wp, adj_vit->point());
                 p = wp + shrink_factor * (p-wp);
-                Direction d = (wp-adj_vit->point()).perpendicular(CGAL::CLOCKWISE).direction();
                 clip(segments, Line(p, d));
             }
         } while (++adj_vit != adj_vit_start);
@@ -52,8 +57,9 @@ void SkinCurveView::draw(QPainter &painter, Regular &regular, Regular::Finite_ve
     painter << segments;
 }
 
-void SkinCurveView::draw(QPainter &painter, Regular &regular, Regular::Finite_edges_iterator &eit, double shrink_factor)
+void SkinCurveView::draw(QPainter &painter, const Regular &regular, Regular::Finite_edges_iterator &eit, double shrink_factor)
 {
+    std::cout << "edge" << std::endl;
     const Regular::Face_handle &fh = eit->first;
     const int i = eit->second;
     const Weighted_point &wp0 = fh->vertex((i+1)%3)->point();
@@ -68,14 +74,16 @@ void SkinCurveView::draw(QPainter &painter, Regular &regular, Regular::Finite_ed
     double xmin = (1-shrink_factor) * (wp0-wp) * edge_tangent;
     double xmax = (1-shrink_factor) * (wp1-wp) * edge_tangent;
     double ymin, ymax;
-    if (regular.is_infinite(fh))
+    if ((regular.dimension() != 2) || regular.is_infinite(fh))
         ymin = -10000;
     else
         ymin = (regular.dual(fh)-wp) * edge_normal;
-    if (regular.is_infinite(fh->neighbor(i)))
+
+    if ((regular.dimension() != 2) || regular.is_infinite(fh->neighbor(i)))
         ymax = 10000;
     else
         ymax = (regular.dual(fh->neighbor(i))-wp) * edge_normal;
+
     ymin *= shrink_factor;
     ymax *= shrink_factor;
 
@@ -86,7 +94,7 @@ void SkinCurveView::draw(QPainter &painter, Regular &regular, Regular::Finite_ed
     painter << segments;
 }
 
-void SkinCurveView::draw(QPainter &painter, Regular &/*regular*/, Regular::Finite_faces_iterator &fit, double shrink_factor)
+void SkinCurveView::draw(QPainter &painter, const Regular &/*regular*/, Regular::Finite_faces_iterator &fit, double shrink_factor)
 {
     Weighted_point wp = focus(fit);
     wp = Weighted_point(wp, (1-shrink_factor) * wp.weight());
