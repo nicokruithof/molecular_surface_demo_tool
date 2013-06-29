@@ -27,14 +27,22 @@ public:
     void draw(QPainter &painter);
 
 private slots:
+    void on_action_Print_triggered();
+
+    void on_actionShow_atoms_toggled(bool);
     void on_actionShow_circles_toggled(bool);
     void on_actionShow_Voronoi_toggled(bool);
     void on_actionShow_Delaunay_toggled(bool);
+    void on_actionShow_union_toggled(bool);
     void on_actionShow_skin_curve_toggled(bool);
+    void on_actionShow_mixed_complex_toggled(bool);
+
+    void on_actionColor_skin_curve_toggled(bool);
 
     void on_shrink_factor_slider_valueChanged();
     void on_probe_radius_slider_valueChanged();
     void on_shrink_factor_spinbox_valueChanged();
+    void on_multiply_with_shrink_button_clicked();
 
 private:
 
@@ -48,6 +56,8 @@ private:
     VoronoiView          m_voronoi_view;
     SkinCurveView        m_skin_curve_view;
     MixedComplexView     m_mixed_complex_view;
+
+    bool                m_color_skin;
 };
 
 #endif // MAINWINDOW

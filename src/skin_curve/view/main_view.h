@@ -27,15 +27,15 @@ private:
   Controller m_controller;
 
 private:
-  QPoint m_circle_center;
-  double m_radius;
-
   enum ModificationType {
-    CREATE,
-    MODIFY
+      NONE,
+      CREATE,
+      MODIFY_WEIGHT,
+      MODIFY_POSITION
   } m_modification_type;
 
-  Regular::Vertex_handle m_vh;
+  Weighted_point m_selected_weighted_point;
+  Vector m_center_offset_vector;
 };
 
 #endif // VIEW_MAIN_VIEW_H

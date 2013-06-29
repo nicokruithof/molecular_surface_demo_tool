@@ -58,6 +58,16 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="multiply_with_shrink_button">
+          <property name="text">
+           <string>Interpolate</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item row="1" column="0">
@@ -169,11 +179,14 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionShow_atoms"/>
    <addaction name="actionShow_circles"/>
    <addaction name="actionShow_Voronoi"/>
    <addaction name="actionShow_Delaunay"/>
+   <addaction name="actionShow_mixed_complex"/>
    <addaction name="actionShow_union"/>
    <addaction name="actionShow_skin_curve"/>
+   <addaction name="actionColor_skin_curve"/>
   </widget>
   <action name="action_Quit">
    <property name="text">
@@ -207,7 +220,7 @@
     <string>Ctrl+P</string>
    </property>
   </action>
-  <action name="actionShow_circles">
+  <action name="actionShow_atoms">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -215,7 +228,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Circles</string>
+    <string>Atoms</string>
    </property>
    <property name="toolTip">
     <string>Show vertices</string>
@@ -299,6 +312,30 @@
    </property>
    <property name="text">
     <string>Union</string>
+   </property>
+  </action>
+  <action name="actionShow_mixed_complex">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Mixed</string>
+   </property>
+  </action>
+  <action name="actionShow_circles">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Circles</string>
+   </property>
+  </action>
+  <action name="actionColor_skin_curve">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Color</string>
    </property>
   </action>
  </widget>

@@ -7,7 +7,7 @@ void UnionOfBallsView::draw(QPainter &painter, const Regular &regular)
 {
     QPen pen;
     pen.setColor(QColor(255, 0, 0));
-    //pen.setWidth(5);
+    pen.setWidth(5);
     painter.setPen(pen);
 
     Regular::Finite_vertices_iterator vit;

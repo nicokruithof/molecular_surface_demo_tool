@@ -29,8 +29,8 @@ const Regular &Model::regular()
             if (weight >= 0) {
                 double radius = sqrt(weight) + m_probe_radius;
                 weight = radius * radius;
-//                if (m_multiply_with_shrink_factor)
-//                    weight /= m_shrink_factor;
+                if (m_multiply_with_shrink_factor)
+                    weight /= m_shrink_factor;
 
                 m_regular.insert(Weighted_point(wp, weight));
             }
@@ -40,22 +40,22 @@ const Regular &Model::regular()
 }
 
 
-void Model::get_points(std::vector<Weighted_point> &pts)
+const std::vector<Weighted_point> &Model::points()
 {
-    std::copy(m_points.begin(), m_points.end(), std::back_inserter(pts));
-//    Regular::Finite_vertices_iterator vit;
-//    for (vit = m_regular.finite_vertices_begin(); vit != m_regular.finite_vertices_end(); ++vit) {
-//        pts.push_back(vit->point());
-//    }
+    return m_points;
 }
 
 void Model::set_shrink_factor(double shrink_factor) {
-    m_shrink_factor = std::min(std::max(shrink_factor, 0.001), 0.999);
+    m_shrink_factor = std::min(std::max(shrink_factor, 0.01), 0.99);
 
     m_regular_is_valid &= !m_multiply_with_shrink_factor;
 }
 
 void Model::set_probe_radius(double probe_radius) {
     m_probe_radius = probe_radius;
-    m_regular_is_valid &= !m_multiply_with_shrink_factor;
+    m_regular_is_valid = false;
+}
+void Model::set_multiply_with_shrink_factor(bool b) {
+    m_multiply_with_shrink_factor = b;
+    m_regular_is_valid = false;
 }

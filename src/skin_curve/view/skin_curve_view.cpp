@@ -12,7 +12,6 @@ void SkinCurveView::draw(QPainter &painter, const Regular &regular, double shrin
     pen.setWidth(1);
     painter.setPen(pen);
 
-    use_colors = true;
     if (use_colors) pen.setColor(QColor(255, 0, 0));
     painter.setPen(pen);
     Regular::Finite_vertices_iterator vit;
