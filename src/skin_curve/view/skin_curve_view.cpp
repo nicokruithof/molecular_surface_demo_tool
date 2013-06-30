@@ -9,7 +9,7 @@ void SkinCurveView::draw(QPainter &painter, const Regular &regular, double shrin
 
     QPen pen;
     pen.setColor(QColor(255, 0, 0));
-    pen.setWidth(1);
+    pen.setWidth(3);
     painter.setPen(pen);
 
     if (use_colors) pen.setColor(QColor(255, 0, 0));
