@@ -13,7 +13,8 @@ private:
     void draw(QPainter &painter, const Regular &regular, Regular::Finite_vertices_iterator &vit);
 
 protected:
-    void generate_circle(const Weighted_point &wp, std::list<Segment> &segments);
+    void generate_circle(const Weighted_point &wp, std::list<Segment> &segments, int subdiv=8);
+    void subdiv_circle(const Weighted_point &wp, std::list<Segment> &segments, int subdiv=8);
 
     void clip(std::list<Segment> &segments, const Line &line);
 

@@ -7,6 +7,7 @@
 
 #include <model/model.h>
 
+#include <view/connolly_view.h>
 #include <view/delaunay_view.h>
 #include <view/mixed_complex_view.h>
 #include <view/skin_curve_view.h>
@@ -29,6 +30,8 @@ public:
 
 private slots:
     void on_action_New_triggered();
+    void on_action_Open_triggered();
+    void on_action_Save_triggered();
     void on_action_Print_triggered();
 
     void on_actionShow_atoms_toggled(bool);
@@ -36,6 +39,7 @@ private slots:
     void on_actionShow_Voronoi_toggled(bool);
     void on_actionShow_Delaunay_toggled(bool);
     void on_actionShow_union_toggled(bool);
+    void on_actionShow_Connolly_toggled(bool);
     void on_actionShow_skin_curve_toggled(bool);
     void on_actionShow_mixed_complex_toggled(bool);
 
@@ -56,6 +60,7 @@ private:
     DelaunayView         m_delaunay_view;
     UnionOfBallsView     m_union_of_balls_view;
     VoronoiView          m_voronoi_view;
+    ConnollyView          m_connolly_view;
     SkinCurveView        m_skin_curve_view;
     MixedComplexView     m_mixed_complex_view;
 

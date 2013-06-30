@@ -22,6 +22,8 @@ MainWindow::MainWindow()
     m_ui->setupUi(this);
     m_ui->main_view->set_model(&m_model);
 
+    m_ui->actionShow_Connolly->setChecked(true);
+
     m_model.set_multiply_with_shrink_factor(m_ui->multiply_with_shrink_button->isChecked());
 }
 
@@ -97,17 +99,22 @@ void MainWindow::draw(QPainter &painter)
         LOG_VERBOSE("/delaunay");
     }
 
+    if (m_ui->actionShow_Connolly->isChecked()) {
+        LOG_VERBOSE("Connolly");
+        m_connolly_view.draw(painter, m_model.regular(), m_model.probe_radius());
+        LOG_VERBOSE("/Connolly");
+    }
+    if (m_ui->actionShow_union->isChecked()) {
+        LOG_VERBOSE("union");
+        m_union_of_balls_view.draw(painter, m_model.regular());
+        LOG_VERBOSE("/union");
+    }
     if (m_ui->actionShow_skin_curve->isChecked()) {
         LOG_VERBOSE("skin");
         m_skin_curve_view.draw(painter, m_model.regular(), m_model.shrink_factor(), m_color_skin);
         LOG_VERBOSE("/skin");
     }
 
-    if (m_ui->actionShow_union->isChecked()) {
-        LOG_VERBOSE("union");
-        m_union_of_balls_view.draw(painter, m_model.regular());
-        LOG_VERBOSE("/union");
-    }
 
     if (m_ui->actionShow_mixed_complex->isChecked()) {
         LOG_VERBOSE("mixed");
@@ -120,6 +127,23 @@ void MainWindow::draw(QPainter &painter)
 void MainWindow::on_action_New_triggered() {
     m_model.clear();
     m_ui->main_view->update();
+}
+void MainWindow::on_action_Open_triggered() {
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    tr("Open."),
+                                                    ".",
+                                                    tr("Weighted points (*.cin)"));
+    if(! fileName.isEmpty()) {
+        load(fileName.toUtf8().constData());
+    }
+}
+void MainWindow::on_action_Save_triggered() {
+    const std::vector<Weighted_point> &pts = m_model.points();
+    std::cout << "***" << std::endl;
+    BOOST_FOREACH(const Weighted_point &wp, pts) {
+        std::cout << wp << std::endl;
+    }
+    std::cout << "***" << std::endl;
 }
 void MainWindow::on_action_Print_triggered() {
   QString fileName = "/home/nico/Code/skin_surface_viewer_build/test.png";
@@ -179,6 +203,9 @@ void MainWindow::on_actionShow_Delaunay_toggled(bool) {
     m_ui->main_view->update();
 }
 void MainWindow::on_actionShow_union_toggled(bool) {
+    m_ui->main_view->update();
+}
+void MainWindow::on_actionShow_Connolly_toggled(bool) {
     m_ui->main_view->update();
 }
 void MainWindow::on_actionShow_skin_curve_toggled(bool) {

@@ -38,7 +38,7 @@ void UnionOfBallsView::draw(QPainter &painter, const Regular &regular, Regular::
     painter << segments;
 }
 
-void UnionOfBallsView::generate_circle(const Weighted_point &wp, std::list<Segment> &segments)
+void UnionOfBallsView::generate_circle(const Weighted_point &wp, std::list<Segment> &segments, int subdiv)
 {
     segments.clear();
     if (wp.weight() <= 0) return;
@@ -50,8 +50,12 @@ void UnionOfBallsView::generate_circle(const Weighted_point &wp, std::list<Segme
     segments.push_back(Segment(wp-dx, wp-dy));
     segments.push_back(Segment(wp-dy, wp+dx));
 
+    subdiv_circle(wp, segments, subdiv);
+}
+void UnionOfBallsView::subdiv_circle(const Weighted_point &wp, std::list<Segment> &segments, int subdiv)
+{
     std::list<Segment> segments2;
-    for (int i=0; i<8; ++i) {
+    for (int i=0; i<subdiv; ++i) {
         segments2.clear();
         BOOST_FOREACH(Segment &s, segments) {
             Bare_point m = CGAL::midpoint(s[0], s[1]);
@@ -74,14 +78,14 @@ void UnionOfBallsView::clip(std::list<Segment> &segments, const Line &line)
         CGAL::Oriented_side s1 = line.oriented_side((*it)[1]);
         if ((s0 == CGAL::LEFT_TURN) && (s1 == CGAL::LEFT_TURN)) {
             ++it;
-//        } else if (s0 != s1) {
-//            Bare_point p;
-//            CGAL::assign(p, CGAL::intersection(line, it->supporting_line()));
-//            if (s0 != CGAL::LEFT_TURN)
-//                *it = Segment(p, (*it)[1]);
-//            else
-//                *it = Segment(p, (*it)[0]);
-//            ++it;
+        } else if (s0 != s1) {
+            Bare_point p;
+            CGAL::assign(p, CGAL::intersection(line, it->supporting_line()));
+            if (s0 != CGAL::LEFT_TURN)
+                *it = Segment(p, (*it)[1]);
+            else
+                *it = Segment(p, (*it)[0]);
+            ++it;
         } else {
             std::list<Segment>::iterator it2 = it;
             ++it;
