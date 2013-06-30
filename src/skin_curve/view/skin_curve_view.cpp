@@ -58,7 +58,6 @@ void SkinCurveView::draw(QPainter &painter, const Regular &regular, Regular::Fin
 
 void SkinCurveView::draw(QPainter &painter, const Regular &regular, Regular::Finite_edges_iterator &eit, double shrink_factor)
 {
-    std::cout << "edge" << std::endl;
     const Regular::Face_handle &fh = eit->first;
     const int i = eit->second;
     const Weighted_point &wp0 = fh->vertex((i+1)%3)->point();

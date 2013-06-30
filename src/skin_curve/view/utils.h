@@ -4,6 +4,7 @@
 #include <qpainter.h>
 #include <model/model.h>
 
+void operator<<(QPainter &painter, const Weighted_point &wp);
 void operator<<(QPainter &painter, const Segment &s);
 void operator<<(QPainter &painter, const Ray &r);
 void operator<<(QPainter &painter, const Line &l);

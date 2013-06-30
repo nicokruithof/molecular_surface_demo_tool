@@ -2,6 +2,14 @@
 
 #include <boost/foreach.hpp>
 
+void operator<<(QPainter &painter, const Weighted_point &wp)
+{
+    if (wp.weight() >= 0) {
+        double r = std::max(2.0, sqrt(wp.weight()));
+        painter.drawEllipse(QRectF(wp.x()-r, wp.y()-r, 2*r, 2*r));
+    }
+}
+
 void operator<<(QPainter &painter, const Segment &s)
 {
     painter.drawLine(s[0][0], s[0][1], s[1][0], s[1][1]);
@@ -30,8 +38,8 @@ void operator<<(QPainter &painter, const Line &l)
 void operator<<(QPainter &painter, const std::list<Segment> &segments)
 {
     BOOST_FOREACH(Segment s, segments) {
-//        painter.drawPoint(s.point(0).x(), s.point(0).y());
-//        painter.drawPoint(s.point(1).x(), s.point(1).y());
+        //        painter.drawPoint(s.point(0).x(), s.point(0).y());
+        //        painter.drawPoint(s.point(1).x(), s.point(1).y());
         painter.drawLine(s.point(0).x(), s.point(0).y(), s.point(1).x(), s.point(1).y());
     }
 }

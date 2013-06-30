@@ -13,7 +13,6 @@ MainView::MainView(QWidget * parent, Qt::WindowFlags f)
 
 void MainView::paintEvent(QPaintEvent * /*event*/)
 {
-    std::cout << __PRETTY_FUNCTION__ << std::endl;
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
     painter.setRenderHint(QPainter::HighQualityAntialiasing);
@@ -34,12 +33,10 @@ void MainView::paintEvent(QPaintEvent * /*event*/)
         QRectF rectangle(m_selected_weighted_point.x() - r, m_selected_weighted_point.y() - r, 2*r, 2*r);
         painter.drawEllipse(rectangle);
     }
-    std::cout << "/" << __PRETTY_FUNCTION__ << std::endl;
 }
 
 void MainView::mouseMoveEvent( QMouseEvent * event )
 {
-    std::cout << __PRETTY_FUNCTION__ << std::endl;
     Bare_point p = Bare_point(event->pos().x(), event->pos().y());
     double weight = (m_selected_weighted_point-p).squared_length();
 
@@ -63,7 +60,6 @@ void MainView::mouseMoveEvent( QMouseEvent * event )
     }
     }
     update();
-    std::cout << "/" << __PRETTY_FUNCTION__ << std::endl;
 }
 void MainView::mousePressEvent( QMouseEvent * event )
 {
@@ -71,7 +67,6 @@ void MainView::mousePressEvent( QMouseEvent * event )
 
     m_modification_type = NONE;
 
-    std::cout << __PRETTY_FUNCTION__ << std::endl;
     if (event->modifiers() == 0) {
         m_modification_type = CREATE;
         m_selected_weighted_point = c;
@@ -107,9 +102,6 @@ void MainView::mousePressEvent( QMouseEvent * event )
             }
         }
     }
-
-    std::cout << "/" << __PRETTY_FUNCTION__ << std::endl;
-
 }
 void MainView::set_model(Model* model)
 {

@@ -7,9 +7,12 @@
 #include <QFileDialog>
 
 #include <ui_main_window.h>
+#include <view/utils.h>
 
-//#define LOG(msg)
-#define LOG(msg) std::cout << msg << std::endl;
+#define LOG(msg)
+#define LOG_VERBOSE(msg)
+//#define LOG(msg) std::cout << msg << std::endl;
+//#define LOG_VERBOSE(msg) std::cout << msg << std::endl;
 
 MainWindow::MainWindow()
 : m_ui(new Ui::MainWindow())
@@ -37,69 +40,71 @@ void MainWindow::draw(QPainter &painter)
     LOG(__PRETTY_FUNCTION__);
 
     if (m_ui->actionShow_atoms->isChecked()) {
-        LOG("circles");
+        LOG_VERBOSE("circles");
         QPen pen;
         pen.setWidth(3);
         painter.setPen(pen);
 
         const std::vector<Weighted_point> &pts = m_model.points();
-        BOOST_FOREACH(Weighted_point pt, pts) {
-            if (pt.weight() > 0) {
-                double r = sqrt(pt.weight());
-                QRectF rectangle(pt.x()-r, pt.y()-r, 2*r, 2*r);
-
-                painter.drawEllipse(rectangle);
-            }
+        BOOST_FOREACH(Weighted_point wp, pts) {
+            painter << wp;
+//            if (pt.weight() > 0) {
+//                double r = sqrt(pt.weight());
+//                QRectF rectangle(pt.x()-r, pt.y()-r, 2*r, 2*r);
+//
+//                painter.drawEllipse(rectangle);
+//            }
         }
-        LOG("/circles");
+        LOG_VERBOSE("/circles");
     }
     if (m_ui->actionShow_circles->isChecked()) {
-        LOG("regular circles");
+        LOG_VERBOSE("regular circles");
         QPen pen;
         pen.setWidth(1);
         painter.setPen(pen);
-        for (Regular::Finite_vertices_iterator vit = m_model.regular().finite_vertices_begin();
-                        vit != m_model.regular().finite_vertices_end(); ++vit) {
-            Weighted_point pt = vit->point();
-            if (pt.weight() > 0) {
-                double r = sqrt(pt.weight());
-                QRectF rectangle(pt.x()-r, pt.y()-r, 2*r, 2*r);
-
-                painter.drawEllipse(rectangle);
-            }
+        const Regular &regular = m_model.regular();
+        for (Regular::Finite_vertices_iterator vit = regular.finite_vertices_begin();
+                        vit != regular.finite_vertices_end(); ++vit) {
+            painter << vit->point();
+//            if (pt.weight() > 0) {
+//                double r = sqrt(pt.weight());
+//                QRectF rectangle(pt.x()-r, pt.y()-r, 2*r, 2*r);
+//
+//                painter.drawEllipse(rectangle);
+//            }
         }
-        LOG("/regular circles");
+        LOG_VERBOSE("/regular circles");
     }
 
 
     if (m_ui->actionShow_Voronoi->isChecked()) {
-        LOG("voronoi");
+        LOG_VERBOSE("voronoi");
         m_voronoi_view.draw(painter, m_model.regular());
-        LOG("/voronoi");
+        LOG_VERBOSE("/voronoi");
     }
 
     if (m_ui->actionShow_Delaunay->isChecked()) {
-        LOG("delaunay");
+        LOG_VERBOSE("delaunay");
         m_delaunay_view.draw(painter, m_model.regular());
-        LOG("/delaunay");
+        LOG_VERBOSE("/delaunay");
     }
 
     if (m_ui->actionShow_skin_curve->isChecked()) {
-        LOG("skin");
+        LOG_VERBOSE("skin");
         m_skin_curve_view.draw(painter, m_model.regular(), m_model.shrink_factor(), m_color_skin);
-        LOG("/skin");
+        LOG_VERBOSE("/skin");
     }
 
     if (m_ui->actionShow_union->isChecked()) {
-        LOG("union");
+        LOG_VERBOSE("union");
         m_union_of_balls_view.draw(painter, m_model.regular());
-        LOG("/union");
+        LOG_VERBOSE("/union");
     }
 
     if (m_ui->actionShow_mixed_complex->isChecked()) {
-        LOG("mixed");
+        LOG_VERBOSE("mixed");
         m_mixed_complex_view.draw(painter, m_model.regular(), m_model.shrink_factor());
-        LOG("/mixed");
+        LOG_VERBOSE("/mixed");
     }
     LOG("/" << __PRETTY_FUNCTION__);
 }
