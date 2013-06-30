@@ -25,8 +25,10 @@ public:
     ~MainWindow();
 
     void draw(QPainter &painter);
+    void load(const char *filename);
 
 private slots:
+    void on_action_New_triggered();
     void on_action_Print_triggered();
 
     void on_actionShow_atoms_toggled(bool);

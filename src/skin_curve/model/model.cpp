@@ -8,6 +8,11 @@ Model::Model()
 {
 }
 
+void Model::clear()
+{
+    m_points.clear();
+    m_regular_is_valid = false;
+}
 void Model::insert(const Weighted_point &wp)
 {
     m_points.push_back(wp);

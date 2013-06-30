@@ -15,6 +15,7 @@ public:
   void set_probe_radius(double probe_radius);
   void set_multiply_with_shrink_factor(bool b);
 
+  void clear();
   void insert(const Weighted_point &wp);
   void remove(const Weighted_point &wp);
 

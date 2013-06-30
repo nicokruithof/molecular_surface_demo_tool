@@ -1,6 +1,7 @@
 #include <qt/main_window.h>
 
 #include <iostream>
+#include <fstream>
 
 #include <boost/foreach.hpp>
 
@@ -21,18 +22,25 @@ MainWindow::MainWindow()
     m_ui->setupUi(this);
     m_ui->main_view->set_model(&m_model);
 
-//    m_model.insert(Weighted_point(Bare_point(300,200), 10000));
-//    m_model.insert(Weighted_point(Bare_point(490,200), 10000));
-//    m_model.insert(Weighted_point(Bare_point(375,350), 10000));
-
-    m_ui->actionShow_skin_curve->setChecked(true);
-    m_ui->actionShow_union->setChecked(false);
-
     m_model.set_multiply_with_shrink_factor(m_ui->multiply_with_shrink_button->isChecked());
 }
 
 MainWindow::~MainWindow() {
     delete(m_ui);
+}
+
+void MainWindow::load(const char *filename) {
+    std::ifstream file(filename);
+    Weighted_point wp;
+
+    m_model.clear();
+//    double scale = 80;
+//    Vector offset(600, 335);
+    while (file >> wp) {
+//        wp = Weighted_point(Bare_point(scale*wp.y(), scale*wp.x())+offset, scale*scale*wp.weight());
+//        std::cout << wp << std::endl;
+        m_model.insert(wp);
+    }
 }
 
 void MainWindow::draw(QPainter &painter)
@@ -109,6 +117,10 @@ void MainWindow::draw(QPainter &painter)
     LOG("/" << __PRETTY_FUNCTION__);
 }
 
+void MainWindow::on_action_New_triggered() {
+    m_model.clear();
+    m_ui->main_view->update();
+}
 void MainWindow::on_action_Print_triggered() {
   QString fileName = "/home/nico/Code/skin_surface_viewer_build/test.png";
 //QFileDialog::getSaveFileName(this,
@@ -181,7 +193,6 @@ void MainWindow::on_actionColor_skin_curve_toggled(bool b) {
 }
 
 void MainWindow::on_multiply_with_shrink_button_clicked() {
-    std::cout << "**************************" << std::endl;
     m_model.set_multiply_with_shrink_factor(m_ui->multiply_with_shrink_button->isChecked());
     m_ui->main_view->update();
 }

@@ -17,6 +17,9 @@ int main( int argc, char** argv )
   Q_INIT_RESOURCE(resource);
 
   MainWindow *window = new MainWindow();
+  if (argc > 1) {
+      window->load(argv[1]);
+  }
   window->show();
 
   return app.exec();
