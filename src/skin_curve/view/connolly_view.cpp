@@ -19,7 +19,6 @@ void ConnollyView::draw(QPainter &painter, const Regular &regular, double probe_
     for (eit = regular.finite_edges_begin(); eit != regular.finite_edges_end(); ++eit) {
         draw(painter, regular, probe_radius, eit);
     }
-
 }
 
 void ConnollyView::draw(QPainter &painter, const Regular &regular, double probe_radius, Regular::Finite_vertices_iterator &vit)

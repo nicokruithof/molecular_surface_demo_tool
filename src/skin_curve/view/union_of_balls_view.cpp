@@ -54,20 +54,19 @@ void UnionOfBallsView::generate_circle(const Weighted_point &wp, std::list<Segme
 }
 void UnionOfBallsView::subdiv_circle(const Weighted_point &wp, std::list<Segment> &segments, int subdiv)
 {
-    std::list<Segment> segments2;
-    for (int i=0; i<subdiv; ++i) {
-        segments2.clear();
-        BOOST_FOREACH(Segment &s, segments) {
-            Bare_point m = CGAL::midpoint(s[0], s[1]);
-            Vector v = m-wp;
-            m = wp + sqrt(wp.weight()/v.squared_length()) * v;
-            segments2.push_back(Segment(s[0], m));
-            segments2.push_back(Segment(m, s[1]));
+    if (wp.weight() > 0) {
+        for (int i=0; i<subdiv; ++i) {
+            std::list<Segment> segments2;
+            BOOST_FOREACH(Segment &s, segments) {
+                Bare_point m = CGAL::midpoint(s[0], s[1]);
+                Vector v = m-wp;
+                m = wp + sqrt(wp.weight()/v.squared_length()) * v;
+                segments2.push_back(Segment(s[0], m));
+                segments2.push_back(Segment(m, s[1]));
+            }
+            segments.swap(segments2);
         }
-        segments.swap(segments2);
     }
-
-
 }
 
 void UnionOfBallsView::clip(std::list<Segment> &segments, const Line &line)
