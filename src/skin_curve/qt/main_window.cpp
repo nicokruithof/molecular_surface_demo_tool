@@ -22,8 +22,6 @@ MainWindow::MainWindow()
     m_ui->setupUi(this);
     m_ui->main_view->set_model(&m_model);
 
-    m_ui->actionShow_Connolly->setChecked(true);
-
     m_model.set_multiply_with_shrink_factor(m_ui->multiply_with_shrink_button->isChecked());
 }
 

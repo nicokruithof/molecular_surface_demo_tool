@@ -112,7 +112,7 @@ void MainWindow::on_action_Open_triggered() {
   QString fileName = QFileDialog::getOpenFileName(this,
                                                   tr("Open."),
                                                   ".",
-                                                  tr("Proteine data base (*.pdb);;Weighted points (*.cin)"));
+                                                  tr("Weighted points (*.cin);;Proteine data base (*.pdb)"));
   if(! fileName.isEmpty()) {
       open(fileName.toUtf8().constData());
   }
