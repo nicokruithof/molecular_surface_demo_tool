@@ -1,7 +1,5 @@
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
-include_directories(${OSG_INCLUDE_DIR})
-include_directories(${ESBTL_INCLUDE_DIR})
 
 file(GLOB sources *.cpp)
 file(GLOB headers *.h)
